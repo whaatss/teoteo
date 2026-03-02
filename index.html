@@ -136,12 +136,12 @@
         
         .tumbleweed-container {
             position: fixed;
-            bottom: 5%;
-            right: -150px;
             z-index: 9999;
             pointer-events: auto;
             cursor: pointer;
-            animation: move-left 18s linear infinite;
+            /* Позиционирование будет управляться через JS */
+            left: -200px;
+            top: -200px;
         }
 
         .tumbleweed-bounce {
@@ -158,13 +158,13 @@
             transition: opacity 0.15s ease;
         }
 
-        /* Эффект взрыва (НОВЫЙ GIF) */
+        /* Эффект взрыва */
         .explosion {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 180px; /* Немного увеличим для красоты */
+            width: 180px;
             height: auto;
             pointer-events: none;
             display: none;
@@ -181,17 +181,12 @@
             pointer-events: none;
             display: none;
             z-index: 10001;
-            image-rendering: pixelated; /* Сохраняем четкость пикселей */
+            image-rendering: pixelated;
         }
 
         @keyframes ingot-float {
             0% { transform: translate(-50%, -50%) translateY(0) rotate(0deg); opacity: 1; }
             100% { transform: translate(-50%, -50%) translateY(-120px) rotate(30deg); opacity: 0; }
-        }
-
-        @keyframes move-left {
-            0% { right: -150px; }
-            100% { right: 110vw; }
         }
 
         @keyframes bounce-chaotic {
@@ -273,9 +268,7 @@
     <div class="tumbleweed-container" id="tumbleweed">
         <div class="tumbleweed-bounce">
             <img src="1691660596_grizly-club-p-kartinki-perekati-pole-bez-fona-47.png" alt="Перекати-поле" class="tumbleweed-img" id="tumbleweed-img">
-            <!-- Новый взрыв -->
             <img src="explosion_generator.gif" alt="Взрыв" class="explosion" id="explosion-gif">
-            <!-- Золотой слиток -->
             <img src="sr2327cb1dd7ff0.png" alt="Золотой слиток" class="gold-ingot" id="gold-ingot">
         </div>
     </div>
@@ -289,6 +282,70 @@
         const scoreboard = document.getElementById('scoreboard');
 
         let count = 0;
+        let activeAnimation = null;
+
+        function spawnTumbleweed() {
+            // Сбрасываем видимость
+            tumbleweedImg.style.opacity = '0.85';
+            
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            const padding = 150; // Отступ за пределами экрана
+
+            // Выбираем случайную сторону появления: 0-верх, 1-право, 2-низ, 3-лево
+            const side = Math.floor(Math.random() * 4);
+            let startX, startY, endX, endY;
+
+            switch(side) {
+                case 0: // Сверху
+                    startX = Math.random() * w;
+                    startY = -padding;
+                    endX = Math.random() * w;
+                    endY = h + padding;
+                    break;
+                case 1: // Справа
+                    startX = w + padding;
+                    startY = Math.random() * h;
+                    endX = -padding;
+                    endY = Math.random() * h;
+                    break;
+                case 2: // Снизу
+                    startX = Math.random() * w;
+                    startY = h + padding;
+                    endX = Math.random() * w;
+                    endY = -padding;
+                    break;
+                case 3: // Слева
+                    startX = -padding;
+                    startY = Math.random() * h;
+                    endX = w + padding;
+                    endY = Math.random() * h;
+                    break;
+            }
+
+            // Устанавливаем начальную позицию
+            tumbleweed.style.transition = 'none';
+            tumbleweed.style.left = startX + 'px';
+            tumbleweed.style.top = startY + 'px';
+
+            // Принудительная перерисовка
+            tumbleweed.offsetHeight;
+
+            // Длительность полета от 8 до 15 секунд
+            const duration = 8000 + Math.random() * 7000;
+            
+            tumbleweed.style.transition = `left ${duration}ms linear, top ${duration}ms linear`;
+            tumbleweed.style.left = endX + 'px';
+            tumbleweed.style.top = endY + 'px';
+
+            // Если объект улетел за экран сам по себе
+            if (activeAnimation) clearTimeout(activeAnimation);
+            activeAnimation = setTimeout(() => {
+                if (tumbleweedImg.style.opacity !== '0') {
+                    spawnTumbleweed();
+                }
+            }, duration);
+        }
 
         tumbleweed.addEventListener('click', function() {
             if (tumbleweedImg.style.opacity === '0') return;
@@ -296,15 +353,17 @@
             // 1. Увеличиваем счет
             count++;
             scoreElement.innerText = count;
-            
-            // Визуальный эффект "толчка" счетчика
             scoreboard.classList.add('bump');
             setTimeout(() => scoreboard.classList.remove('bump'), 200);
 
-            // 2. Скрываем перекати-поле
+            // 2. Скрываем перекати-поле и останавливаем движение
             tumbleweedImg.style.opacity = '0';
+            const rect = tumbleweed.getBoundingClientRect();
+            tumbleweed.style.transition = 'none';
+            tumbleweed.style.left = rect.left + 'px';
+            tumbleweed.style.top = rect.top + 'px';
             
-            // 3. Запускаем новый взрыв (сбрасываем src для перезапуска GIF)
+            // 3. Запускаем взрыв
             const currentExplosionSrc = explosionGif.src;
             explosionGif.src = '';
             explosionGif.src = currentExplosionSrc;
@@ -322,13 +381,13 @@
             setTimeout(() => {
                 goldIngot.style.display = 'none';
                 goldIngot.style.animation = '';
+                // 6. Появление в новом месте через небольшую паузу
+                spawnTumbleweed();
             }, 1500);
-
-            // 6. Возвращение перекати-поля
-            setTimeout(() => {
-                tumbleweedImg.style.opacity = '0.85';
-            }, 2500);
         });
+
+        // Запуск первого перекати-поля
+        window.onload = spawnTumbleweed;
     </script>
 
 </body>
