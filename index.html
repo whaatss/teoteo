@@ -6,13 +6,11 @@
     <title>TEOTEO — Minecraft сумасшествие!</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
-        /* --- ПЕРЕМЕННЫЕ (Здесь задаются основные цвета) --- */
+        /* --- ПЕРЕМЕННЫЕ --- */
         :root {
-            --bg-black: #030303; /* Глубокий черный фон */
+            --bg-black: #030303; 
             --card-bg: #0c0c0c;
-            /* Измененный цвет: Сочный оранжевый */
             --accent: #ff6b00; 
-            /* Цвет свечения для оранжевого */
             --accent-glow: rgba(255, 107, 0, 0.4); 
             --text-white: #ffffff;
             --text-muted: #888888;
@@ -38,331 +36,121 @@
 
         /* --- АНИМАЦИИ --- */
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- НАВИГАЦИЯ (Стеклянный эффект) --- */
+        /* --- НАВИГАЦИЯ --- */
         .navbar {
-            position: fixed; /* Фиксируем сверху для эффекта стекла при скролле */
+            position: fixed;
             width: 100%;
             top: 0;
             padding: 20px 0;
             z-index: 50;
             background: rgba(3, 3, 3, 0.6);
-            backdrop-filter: blur(12px); /* Размытие заднего фона */
+            backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.3s ease;
         }
 
-        .nav-container { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
-
-        .logo { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            font-weight: 900; 
-            font-size: 1.4rem; 
-            letter-spacing: 1px;
-        }
-
-        .logo img { 
-            width: 35px; 
-            border-radius: 8px; /* Небольшое скругление для логотипа, если он квадратный */
-        }
-
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 12px; font-weight: 900; font-size: 1.4rem; letter-spacing: 1px; }
+        .logo img { width: 35px; border-radius: 8px; }
+        
         .nav-links a { 
-            color: var(--text-muted); 
-            text-decoration: none; 
-            margin-left: 35px; 
-            font-weight: 600; 
-            transition: 0.3s ease; 
-            position: relative;
+            color: var(--text-muted); text-decoration: none; margin-left: 35px; 
+            font-weight: 600; transition: 0.3s ease; position: relative;
         }
-
-        .nav-links a:hover { 
-            color: var(--text-white); 
-        }
-
-        /* Подчеркивание при наведении на ссылки меню */
+        .nav-links a:hover { color: var(--text-white); }
         .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0%;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: var(--accent);
-            transition: width 0.3s ease;
+            content: ''; position: absolute; width: 0%; height: 2px;
+            bottom: -5px; left: 0; background-color: var(--accent); transition: width 0.3s ease;
         }
+        .nav-links a:hover::after { width: 100%; }
 
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* --- ПЕРВАЯ СЕКЦИЯ (НА ВЕСЬ ЭКРАН) --- */
+        /* --- ПЕРВАЯ СЕКЦИЯ --- */
         .hero-screen {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            background-color: var(--bg-black);
-            padding-top: 60px; /* Отступ для фиксированного меню */
-            box-sizing: border-box;
+            height: 100vh; display: flex; align-items: center;
+            background-color: var(--bg-black); padding-top: 60px; box-sizing: border-box;
         }
 
         .hero-card {
             background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), url('background.jpg') center/cover;
-            background-color: #111; /* Запасной цвет, если картинка не загрузится */
-            border-radius: 30px;
-            padding: 100px 70px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            width: 100%;
-            box-sizing: border-box;
+            background-color: #111; border-radius: 30px; padding: 100px 70px;
+            border: 1px solid rgba(255, 255, 255, 0.05); width: 100%; box-sizing: border-box;
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
-            position: relative;
-            overflow: hidden;
+            position: relative; overflow: hidden;
         }
-
-        /* Эффект "дыхания" и свечения карточки при наведении */
         .hero-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(255, 107, 0, 0.05);
             border-color: rgba(255, 107, 0, 0.2);
         }
 
-        .hero-content {
-            animation: fadeInUp 1s ease-out forwards; /* Плавное появление */
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-content h1 { 
-            font-size: 4.5rem; 
-            margin: 0; 
-            font-weight: 900; 
-            line-height: 1.1; 
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Тень для объема текста */
-        }
-
-        .highlight { 
-            color: var(--accent); 
-            text-shadow: 0 0 20px var(--accent-glow); /* Светящийся оранжевый текст */
-        }
-
-        .description { 
-            font-size: 1.25rem; 
-            color: #ccc; 
-            margin: 30px 0 40px 0; 
-            max-width: 650px; 
-            line-height: 1.6; 
-        }
+        .hero-content { animation: fadeInUp 1s ease-out forwards; position: relative; z-index: 2; }
+        .hero-content h1 { font-size: 4.5rem; margin: 0; font-weight: 900; line-height: 1.1; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .highlight { color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
+        .description { font-size: 1.25rem; color: #ccc; margin: 30px 0 40px 0; max-width: 650px; line-height: 1.6; }
 
         /* --- КНОПКИ --- */
         .btn-main {
-            background: var(--accent);
-            color: #000;
-            padding: 18px 45px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 1.1rem;
-            display: inline-block;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            background: var(--accent); color: #000; padding: 18px 45px; border-radius: 12px;
+            text-decoration: none; font-weight: 800; font-size: 1.1rem; display: inline-block;
+            transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;
         }
-
         .btn-main:hover { 
-            transform: translateY(-3px) scale(1.02); /* Кнопка чуть увеличивается */
-            box-shadow: 0 15px 25px var(--accent-glow); /* Оранжевое свечение */
-            background: #ff7f2a; /* Чуть светлеет при наведении */
+            transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 25px var(--accent-glow); background: #ff7f2a; 
         }
-
         .btn-outline { 
-            color: var(--text-white); 
-            text-decoration: none; 
-            margin-left: 30px; 
-            font-weight: 600; 
-            opacity: 0.7; 
-            transition: all 0.3s ease; 
-            padding: 18px 30px;
-            border: 1px solid transparent;
-            border-radius: 12px;
+            color: var(--text-white); text-decoration: none; margin-left: 30px; font-weight: 600; 
+            opacity: 0.7; transition: all 0.3s ease; padding: 18px 30px; border: 1px solid transparent; border-radius: 12px;
         }
-
-        .btn-outline:hover { 
-            opacity: 1; 
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
+        .btn-outline:hover { opacity: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
 
         /* --- ВТОРАЯ СЕКЦИЯ --- */
         .bottom-screen {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 120px 0 50px 0;
-            position: relative;
+            min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+            padding: 120px 0 50px 0; position: relative;
         }
-
-        /* Легкий градиент на фоне нижней секции */
         .bottom-screen::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(circle at center, rgba(255, 107, 0, 0.03) 0%, transparent 70%);
-            pointer-events: none;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at center, rgba(255, 107, 0, 0.03) 0%, transparent 70%); pointer-events: none;
         }
 
-        .grid-layout {
-            display: grid;
-            grid-template-columns: 1fr 1.8fr;
-            gap: 60px;
-            align-items: stretch;
-            position: relative;
-            z-index: 2;
-        }
+        .grid-layout { display: grid; grid-template-columns: 1fr 1.8fr; gap: 60px; align-items: stretch; position: relative; z-index: 2; }
+        .info-side { display: flex; flex-direction: column; justify-content: space-between; }
+        .footer-brand img { width: 60px; margin-bottom: 20px; border-radius: 12px; }
+        .footer-brand h2 { font-size: 2.2rem; margin: 0; letter-spacing: -1px; }
+        .footer-brand p { color: #555; margin-top: 15px; font-size: 0.95rem; line-height: 1.5; }
 
-        /* Информация слева */
-        .info-side {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+        .resources-links { margin-top: 60px; }
+        .resources-links h3 { color: #444; font-size: 0.85rem; letter-spacing: 4px; margin-bottom: 25px; text-transform: uppercase; }
+        .resources-links a { display: inline-block; color: #aaa; text-decoration: none; margin-bottom: 15px; margin-right: 20px; font-weight: 500; transition: all 0.2s ease; }
+        .resources-links a:hover { color: var(--accent); transform: translateX(5px); }
 
-        .footer-brand img { 
-            width: 60px; 
-            margin-bottom: 20px; 
-            border-radius: 12px;
-        }
-
-        .footer-brand h2 { 
-            font-size: 2.2rem; 
-            margin: 0; 
-            letter-spacing: -1px;
-        }
-
-        .footer-brand p { 
-            color: #555; 
-            margin-top: 15px; 
-            font-size: 0.95rem; 
-            line-height: 1.5;
-        }
-
-        .resources-links { 
-            margin-top: 60px; 
-        }
-
-        .resources-links h3 { 
-            color: #444; 
-            font-size: 0.85rem; 
-            letter-spacing: 4px; 
-            margin-bottom: 25px; 
-            text-transform: uppercase;
-        }
-
-        .resources-links a { 
-            display: inline-block; 
-            color: #aaa; 
-            text-decoration: none; 
-            margin-bottom: 15px; 
-            margin-right: 20px;
-            font-weight: 500; 
-            transition: all 0.2s ease; 
-        }
-
-        .resources-links a:hover { 
-            color: var(--accent); 
-            transform: translateX(5px); /* Текст слегка уезжает вправо */
-        }
-
-        /* Плашка лаунчера */
         .launcher-card {
             background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.85)), url('launcher-bg.jpg') center/cover;
-            background-color: #1a1a1a;
-            border-radius: 30px;
-            padding: 80px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            min-height: 350px;
-            display: flex;
-            align-items: center;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            position: relative;
-            overflow: hidden;
+            background-color: #1a1a1a; border-radius: 30px; padding: 80px; border: 1px solid rgba(255, 255, 255, 0.05);
+            min-height: 350px; display: flex; align-items: center; transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative; overflow: hidden;
         }
-
-        .launcher-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.9);
-            border-color: rgba(255, 107, 0, 0.2);
-        }
-
-        /* Эффект блика на карточке лаунчера */
+        .launcher-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.9); border-color: rgba(255, 107, 0, 0.2); }
         .launcher-card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 50%; height: 100%;
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
             background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
-            transform: skewX(-20deg);
-            transition: 0.5s;
+            transform: skewX(-20deg); transition: 0.5s;
         }
+        .launcher-card:hover::after { left: 150%; transition: 0.7s ease-in-out; }
+        .launcher-content { position: relative; z-index: 2; }
+        .launcher-content h3 { font-size: 3rem; margin: 0 0 40px 0; line-height: 1.1; font-weight: 800; }
+        .small-btn { padding: 16px 40px; font-size: 1rem; }
 
-        .launcher-card:hover::after {
-            left: 150%;
-            transition: 0.7s ease-in-out;
-        }
+        .footer-legal { text-align: right; margin-top: 80px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 30px; position: relative; z-index: 2; }
+        .footer-legal a { color: #444; text-decoration: none; font-size: 0.85rem; transition: 0.3s; }
+        .footer-legal a:hover { color: #fff; }
 
-        .launcher-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .launcher-content h3 { 
-            font-size: 3rem; 
-            margin: 0 0 40px 0; 
-            line-height: 1.1; 
-            font-weight: 800;
-        }
-
-        .small-btn { 
-            padding: 16px 40px; 
-            font-size: 1rem; 
-        }
-
-        .footer-legal { 
-            text-align: right; 
-            margin-top: 80px; 
-            border-top: 1px solid rgba(255,255,255,0.05); 
-            padding-top: 30px; 
-            position: relative;
-            z-index: 2;
-        }
-
-        .footer-legal a { 
-            color: #444; 
-            text-decoration: none; 
-            font-size: 0.85rem; 
-            transition: 0.3s;
-        }
-
-        .footer-legal a:hover {
-            color: #fff;
-        }
-
-        /* --- АДАПТИВНОСТЬ (Для телефонов и планшетов) --- */
+        /* --- АДАПТИВНОСТЬ --- */
         @media (max-width: 1000px) {
             .grid-layout { grid-template-columns: 1fr; gap: 40px; }
             .hero-content h1 { font-size: 3rem; }
@@ -371,17 +159,67 @@
             .launcher-content h3 { font-size: 2.2rem; }
             .resources-links a { display: block; }
         }
-
         @media (max-width: 600px) {
             .hero-content h1 { font-size: 2.5rem; }
             .btn-main, .btn-outline { display: block; text-align: center; margin: 10px 0; width: 100%; box-sizing: border-box; }
-            .nav-links { display: none; } /* Скрываем меню на мобилках для чистоты (нужно делать бургер-меню) */
+            .nav-links { display: none; }
+        }
+
+        /* =========================================
+           АНИМАЦИЯ ПЕРЕКАТИ-ПОЛЯ (TUMBLEWEED)
+        ========================================= */
+        
+        /* 1. Контейнер: двигает объект справа налево по всему экрану */
+        .tumbleweed-container {
+            position: fixed;
+            bottom: 5%; /* Летает в нижней части экрана */
+            right: -150px; /* Стартует за правым краем экрана */
+            z-index: 9999; /* Поверх всего */
+            pointer-events: none; /* Пропускает клики мыши сквозь себя */
+            animation: move-left 18s linear infinite; /* 18 секунд летит, потом повторяет */
+        }
+
+        /* 2. Внутренний блок: отвечает за хаотичные прыжки вверх-вниз */
+        .tumbleweed-bounce {
+            animation: bounce-chaotic 8s ease-in-out infinite;
+        }
+
+        /* 3. Сама картинка: крутится вокруг своей оси */
+        .tumbleweed-img {
+            width: 80px; /* Размер перекати-поля */
+            height: auto;
+            opacity: 0.85; /* Немного прозрачное, чтобы вписаться в фон */
+            animation: spin-roll 3s linear infinite;
+            filter: drop-shadow(0px 10px 10px rgba(0,0,0,0.5)); /* Тень для объема */
+        }
+
+        /* Ключевые кадры полета влево */
+        @keyframes move-left {
+            0% { right: -150px; }
+            100% { right: 110vw; } /* Улетает за левый край экрана */
+        }
+
+        /* Ключевые кадры прыжков (реалистичная физика отскока) */
+        @keyframes bounce-chaotic {
+            0%, 100% { transform: translateY(0px) scaleY(0.95); } /* Касается земли, чуть сплющивается */
+            10% { transform: translateY(-150px) scaleY(1.05); } /* Высокий прыжок */
+            25% { transform: translateY(0px) scaleY(0.95); }
+            40% { transform: translateY(-80px) scaleY(1); } /* Средний прыжок */
+            55% { transform: translateY(0px) scaleY(0.95); }
+            65% { transform: translateY(-30px) scaleY(1); } /* Мелкий подскок */
+            75% { transform: translateY(0px) scaleY(0.95); }
+            85% { transform: translateY(-180px) scaleY(1.05); } /* Очень высокий прыжок ветром */
+        }
+
+        /* Ключевые кадры вращения (крутится влево) */
+        @keyframes spin-roll {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-360deg); }
         }
     </style>
 </head>
 <body>
 
-    <!-- ВЕРХНЕЕ МЕНЮ -->
     <nav class="navbar">
         <div class="container nav-container">
             <div class="logo">
@@ -395,7 +233,6 @@
         </div>
     </nav>
 
-    <!-- ГЛАВНЫЙ ЭКРАН -->
     <section class="hero-screen">
         <div class="container" style="width: 100%;">
             <div class="hero-card">
@@ -414,11 +251,9 @@
         </div>
     </section>
 
-    <!-- НИЖНИЙ ЭКРАН (Скролл вниз) -->
     <section id="start-section" class="bottom-screen">
         <div class="container grid-layout">
             
-            <!-- Левая колонка (Инфо и ссылки) -->
             <div class="info-side">
                 <div class="footer-brand">
                     <img src="logo.png" alt="Logo" onerror="this.style.display='none'">
@@ -436,7 +271,6 @@
                 </div>
             </div>
 
-            <!-- Правая колонка (Лаунчер) -->
             <div class="launcher-card">
                 <div class="launcher-content">
                     <h3>Наш собственный<br>лаунчер для игры</h3>
@@ -450,6 +284,15 @@
             <a href="#">Оферта</a>
         </div>
     </section>
+
+    <!-- ==============================================
+         АНИМИРОВАННОЕ ПЕРЕКАТИ-ПОЛЕ (ДОБАВЛЕНО СЮДА)
+         ============================================== -->
+    <div class="tumbleweed-container">
+        <div class="tumbleweed-bounce">
+            <img src="1691660596_grizly-club-p-kartinki-perekati-pole-bez-fona-47.png" alt="Перекати-поле" class="tumbleweed-img">
+        </div>
+    </div>
 
 </body>
 </html>
