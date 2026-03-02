@@ -1,153 +1,131 @@
 :root {
-    --bg-color: #0d0d0d;       /* Черный фон страницы */
-    --card-bg: #161616;        /* Темно-серый для футера */
-    --accent-color: #f1c40f;   /* Золотой цвет */
-    --text-color: #ffffff;
+    --bg-page: #050505;      /* Почти черный фон страницы */
+    --card-bg: #111111;      /* Цвет карточек если нет фото */
+    --accent: #ffcc00;       /* Желтый MineFite */
+    --text-main: #ffffff;
+    --text-grey: #888888;
 }
 
-html {
-    scroll-behavior: smooth; /* Включает плавную прокрутку */
-}
+html { scroll-behavior: smooth; }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif; /* Современный шрифт */
     margin: 0;
     padding: 0;
 }
 
-.container {
-    padding: 40px 10%; /* Отступы, создающие "черные рамки" по бокам */
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-}
-
-/* Настройки первой карточки (главная) */
-.hero-card {
-    width: 100%;
-    /* Здесь меняем картинку первой страницы */
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url('background.jpg'); 
-    background-size: cover;
-    background-position: center;
-    border-radius: 30px; /* Закругление углов как на MineFite */
-    padding: 100px 50px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    position: relative;
-    overflow: hidden;
-}
-
-.hero-content {
-    max-width: 600px;
-    position: relative;
-    z-index: 2;
-}
-
-.main-logo {
-    max-width: 150px; /* Размер логотипа */
-    margin-bottom: 20px;
-}
-
-/* Стиль новой цитаты */
-.quote {
-    font-size: 1.5rem;
-    font-weight: 500;
-    line-height: 1.4;
-    color: #eee;
-    margin-bottom: 30px;
-    border-left: 4px solid var(--accent-color);
-    padding-left: 20px;
-}
-
-.quote .author {
-    display: block;
-    margin-top: 10px;
-    font-size: 1rem;
-    color: #bbb;
-    font-style: italic;
-}
-
-.btn-main {
-    background: var(--accent-color);
-    color: #000;
-    padding: 15px 40px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.1rem;
-    display: inline-block;
-    transition: transform 0.3s ease;
-}
-
-.btn-main:hover {
-    transform: scale(1.05); /* Легкое увеличение при наведении */
-}
-
-/* Якорь для спуска */
-#footer-anchor {
-    height: 1px;
-    margin-top: -20px;
-}
-
-/* ФУТЕР (Вторая страница) */
-.footer-section {
-    background: var(--bg-color);
-    padding: 60px 10%;
-}
-
-.footer-top {
+/* Навигация */
+.navbar { padding: 20px 0; margin-bottom: 20px; }
+.nav-container {
+    max-width: 1100px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
-    margin-bottom: 50px;
+    padding: 0 20px;
+}
+.logo-text { font-weight: 900; font-size: 1.2rem; letter-spacing: 1px; }
+.nav-links a { color: var(--text-grey); text-decoration: none; margin-left: 20px; font-weight: 600; }
+.nav-links a:hover { color: white; }
+
+/* ОБЩИЙ КОНТЕЙНЕР (Ограничивает ширину сайта как на MineFite) */
+.main-container {
+    max-width: 1100px; /* Ширина контента */
+    margin: 0 auto;    /* По центру */
+    padding: 0 20px;
+    padding-bottom: 50px;
 }
 
-.brand h2 { margin: 0; font-size: 1.5rem; }
-.brand p { color: #666; font-size: 0.9rem; }
-
-.links-group a {
-    display: block;
-    color: #aaa;
-    text-decoration: none;
-    margin: 8px 0;
-    transition: 0.2s;
-}
-.links-group a:hover { color: var(--accent-color); }
-
-/* КАРТОЧКА ЛАУНЧЕРА (С Ковбоем) */
-.launcher-card {
-    /* Ссылка на картинку с ковбоем */
-    background: linear-gradient(to right, rgba(0,0,0,0.8) 30%, rgba(0,0,0,0.2)), url('launcher-bg.jpg');
+/* --- ГЛАВНАЯ КАРТОЧКА --- */
+.hero-card {
+    /* Если картинки нет, будет серый цвет. Если есть - картинка */
+    background-color: var(--card-bg);
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('background.jpg');
     background-size: cover;
-    background-position: center; /* Центрируем ковбоя */
-    border-radius: 24px;
-    padding: 50px;
-    border: 1px solid #333;
+    background-position: center;
+    
+    height: 500px; /* Фиксированная высота, чтобы блок не исчезал! */
+    border-radius: 30px;
     display: flex;
     align-items: center;
-    min-height: 200px;
+    padding-left: 60px;
+    margin-bottom: 60px;
+    position: relative;
+    border: 1px solid #222;
 }
 
-.launcher-content h3 {
-    font-size: 2rem;
-    margin: 0 0 20px 0;
-    color: white;
-}
+.hero-content { max-width: 600px; z-index: 2; }
 
-.btn-download {
-    background: var(--accent-color);
+.main-logo { width: 120px; margin-bottom: 20px; display: block; }
+
+.quote-box { margin-bottom: 30px; border-left: 4px solid var(--accent); padding-left: 20px; }
+.quote-text { font-size: 1.4rem; font-weight: 700; line-height: 1.4; margin: 0; }
+.quote-author { color: var(--text-grey); font-style: italic; margin-top: 10px; }
+
+/* Желтая кнопка */
+.btn-yellow {
+    background-color: var(--accent);
     color: black;
-    padding: 12px 30px;
-    border-radius: 8px;
+    padding: 14px 35px;
+    border-radius: 12px;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 800;
+    font-size: 1rem;
     display: inline-block;
+    transition: transform 0.2s;
+}
+.btn-yellow:hover { transform: scale(1.05); }
+
+/* --- НИЖНЯЯ СЕКЦИЯ (Таблица) --- */
+.info-section {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr; /* Левая часть меньше, правая (лаунчер) больше */
+    gap: 40px;
+    align-items: start;
 }
 
-.legal {
-    margin-top: 40px;
-    text-align: right;
-    font-size: 0.8rem;
+/* Левая колонка */
+.brand-block h2 { font-size: 1.5rem; margin-bottom: 10px; }
+.copyright { color: var(--text-grey); font-size: 0.9rem; line-height: 1.5; }
+
+.links-list { margin-top: 40px; }
+.links-list h3 { color: #444; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 15px; }
+.links-list a {
+    display: block;
+    color: #bbb;
+    text-decoration: none;
+    margin-bottom: 12px;
+    font-weight: 500;
+    transition: 0.2s;
 }
-.legal a { color: #444; text-decoration: none; }
+.links-list a:hover { color: var(--accent); padding-left: 5px; }
+
+/* --- БЛОК С КОВБОЕМ --- */
+.launcher-block {
+    /* Фон с ковбоем */
+    background-color: var(--card-bg);
+    background-image: linear-gradient(to right, rgba(0,0,0,0.9) 20%, rgba(0,0,0,0.1)), url('cowboy.jpg');
+    background-size: cover;
+    background-position: center; /* Центрируем ковбоя */
+    
+    border-radius: 25px;
+    height: 250px; /* Высота блока */
+    display: flex;
+    align-items: center;
+    padding-left: 50px;
+    border: 1px solid #333;
+}
+
+.launcher-content h3 { font-size: 1.8rem; margin: 0 0 20px 0; line-height: 1.2; }
+.btn-small { padding: 10px 25px; font-size: 0.9rem; }
+
+/* Подвал */
+.footer-legal { text-align: right; margin-top: 40px; padding-top: 20px; border-top: 1px solid #111; }
+.footer-legal a { color: #333; text-decoration: none; font-size: 0.8rem; }
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .info-section { grid-template-columns: 1fr; } /* В одну колонку на телефоне */
+    .hero-card { padding: 20px; height: auto; padding-top: 100px; padding-bottom: 100px; }
+}
