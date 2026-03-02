@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TEOTEO — Minecraft сумасшествие!</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <nav class="navbar">
-        <div class="container nav-flex">
+        <div class="container nav-container">
             <div class="logo">
                 <img src="logo.png" alt="Logo">
                 <span>TEOTEO</span>
@@ -32,32 +32,32 @@
                         Мир где можно войти в дверь либо в окно! Дикий Запад.
                     </p>
                     <div class="hero-btns">
-                        <a href="#start" class="btn-yellow">Начать игру ▶</a>
-                        <a href="#" class="btn-text">Мини гайд</a>
+                        <a href="#start-section" class="btn-main">Начать игру ▶</a>
+                        <a href="#" class="btn-outline">Мини гайд</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="bottom-screen" id="start">
-        <div class="container main-grid">
+    <section id="start-section" class="bottom-screen">
+        <div class="container grid-layout">
             
-            <div class="sidebar">
-                <div class="brand-info">
-                    <img src="logo.png" alt="Logo" class="footer-logo">
+            <div class="info-side">
+                <div class="footer-brand">
+                    <img src="logo.png" alt="Logo">
                     <h2>TEOTEO</h2>
-                    <p class="copyright">© 2026. Все права защищены.<br>Доверимся тем, кто копирует нас.</p>
+                    <p>© 2026. Все права защищены.<br>Доверимся тем, кто копирует нас.</p>
                 </div>
-
-                <div class="resources-box">
+                
+                <div class="resources-links">
                     <h3>РЕСУРСЫ</h3>
-                    <div class="plaque-list">
+                    <div class="plaque-grid">
                         <a href="rules.html" class="plaque">
                             <span class="plaque-icon">📜</span>
                             <span class="plaque-text">Правила</span>
                         </a>
-                        <a href="http://твой-ip:8100" target="_blank" class="plaque">
+                        <a href="#" target="_blank" class="plaque">
                             <span class="plaque-icon">🗺️</span>
                             <span class="plaque-text">Карта BlueMap</span>
                         </a>
@@ -69,27 +69,22 @@
                             <span class="plaque-icon">💬</span>
                             <span class="plaque-text">Discord</span>
                         </a>
-                        <a href="#" class="plaque">
-                            <span class="plaque-icon">▶️</span>
-                            <span class="plaque-text">YouTube</span>
-                        </a>
                     </div>
                 </div>
             </div>
 
-            <div class="launcher-banner">
+            <div class="launcher-card">
                 <div class="launcher-content">
-                    <h2>Наш собственный<br>лаунчер для игры</h2>
-                    <a href="launcher.exe" download class="btn-yellow small">Загрузить ⬇</a>
+                    <h3>Наш собственный<br>лаунчер для игры</h3>
+                    <a href="launcher.exe" download class="btn-main small-btn">Загрузить ⬇</a>
                 </div>
             </div>
 
         </div>
-
-        <div class="container footer-bottom">
+        
+        <div class="container footer-legal">
             <a href="#">Оферта</a>
         </div>
     </section>
-
 </body>
 </html>
