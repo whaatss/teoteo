@@ -3,61 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEOTEO Project</title>
+    <title>Название Проекта — Minecraft Server</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="container">
-            <span class="logo-text">TEOTEO</span>
-            <div class="nav-links">
-                <a href="https://discord.gg/v2ZjPARPdQ" target="_blank">Discord</a>
+    <header class="navbar">
+        <div class="container nav-flex">
+            <div class="logo">
+                <img src="logo.png" alt="Logo">
+                <span>ИМЯ ПРОЕКТА</span>
+            </div>
+            <nav class="nav-links">
+                <a href="#">Форум</a>
+                <a href="#">Донат</a>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <div class="page-wrapper">
-        
+    <main class="container">
         <section class="hero-card">
             <div class="hero-content">
-                <img src="logo.png" alt="Logo" class="main-logo">
-                <div class="quote-container">
-                    <p class="quote">«В этом мире есть два типа людей: те, кто входят через дверь и те, кто входят через окно»</p>
-                    <p class="author">— Сказал мэтр</p>
+                <h1>ИМЯ ПРОЕКТА — <br><span>Minecraft RP.</span></h1>
+                <p>Мы — уникальный проект с глубоким лором и атмосферой. Присоединяйся к нашему сообществу прямо сейчас!</p>
+                <div class="hero-btns">
+                    <a href="#start" class="btn-yellow">Начать игру ▶</a>
+                    <a href="#" class="btn-text">Мини гайд</a>
                 </div>
-                <a href="#footer" class="btn-start">Начать игру ▶</a>
             </div>
         </section>
 
-        <footer class="footer-area" id="footer">
-            <div class="footer-main">
-                <div class="footer-brand">
-                    <h2>TEOTEO</h2>
-                    <p class="copy">© TEOTEO 2026<br>Доверимся тем, кто копирует нас.</p>
+        <section class="info-grid" id="start">
+            <div class="resources">
+                <div class="brand-footer">
+                    <img src="logo.png" alt="Logo" class="footer-logo">
+                    <h3>ИМЯ ПРОЕКТА</h3>
+                    <p>© 2026. Все права защищены.</p>
                 </div>
-
-                <div class="footer-links">
-                    <p class="links-title">РЕСУРСЫ</p>
-                    <a href="rules.html">Правила</a>
-                    <a href="http://твой-ip:8100" target="_blank">Карта</a>
-                    <a href="#">Донат</a>
-                    <a href="https://discord.gg/v2ZjPARPdQ" target="_blank">Discord</a>
-                    <a href="#" target="_blank">YouTube</a>
-                </div>
-            </div>
-
-            <div class="launcher-banner">
-                <div class="launcher-text">
-                    <h3>Наш собственный<br>лаунчер для игры</h3>
-                    <a href="launcher.exe" download class="btn-download">Загрузить ⬇</a>
+                
+                <div class="links-group">
+                    <h4>РЕСУРСЫ</h4>
+                    <ul>
+                        <li><a href="rules.html">Правила</a></li>
+                        <li><a href="http://твой-ip:8100" target="_blank">Карта BlueMap</a></li>
+                        <li><a href="#">Донат</a></li>
+                        <li><a href="https://discord.gg/v2ZjPARPdQ" target="_blank">Discord</a></li>
+                        <li><a href="https://youtube.com/твой-канал" target="_blank">YouTube</a></li>
+                    </ul>
                 </div>
             </div>
-            
-            <p class="legal">Оферта</p>
+
+            <div class="launcher-box">
+                <div class="launcher-content">
+                    <h2>Наш собственный<br>лаунчер для игры</h2>
+                    <a href="launcher.exe" download class="btn-yellow">Загрузить ⬇</a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bottom-footer">
+            <a href="#">Оферта</a>
         </footer>
-    </div>
+    </main>
 
 </body>
 </html>
