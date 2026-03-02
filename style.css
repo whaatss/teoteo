@@ -1,131 +1,103 @@
 :root {
-    --bg-page: #050505;      /* Почти черный фон страницы */
-    --card-bg: #111111;      /* Цвет карточек если нет фото */
-    --accent: #ffcc00;       /* Желтый MineFite */
-    --text-main: #ffffff;
-    --text-grey: #888888;
+    --bg-black: #050505;
+    --accent: #ffcc00;
+    --card-dark: #111111;
 }
 
+/* Плавный спуск */
 html { scroll-behavior: smooth; }
 
 body {
-    background-color: var(--bg-page);
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif; /* Современный шрифт */
+    background-color: var(--bg-black);
+    color: white;
+    font-family: 'Inter', sans-serif;
     margin: 0;
-    padding: 0;
+}
+
+/* Черные рамки по бокам */
+.page-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
 }
 
 /* Навигация */
-.navbar { padding: 20px 0; margin-bottom: 20px; }
-.nav-container {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 20px;
-}
-.logo-text { font-weight: 900; font-size: 1.2rem; letter-spacing: 1px; }
-.nav-links a { color: var(--text-grey); text-decoration: none; margin-left: 20px; font-weight: 600; }
-.nav-links a:hover { color: white; }
+.navbar { padding: 30px 0; }
+.navbar .container { display: flex; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+.logo-text { font-weight: 900; font-size: 1.4rem; }
+.nav-links a { color: #888; text-decoration: none; font-weight: bold; }
 
-/* ОБЩИЙ КОНТЕЙНЕР (Ограничивает ширину сайта как на MineFite) */
-.main-container {
-    max-width: 1100px; /* Ширина контента */
-    margin: 0 auto;    /* По центру */
-    padding: 0 20px;
-    padding-bottom: 50px;
-}
-
-/* --- ГЛАВНАЯ КАРТОЧКА --- */
+/* Первая карточка */
 .hero-card {
-    /* Если картинки нет, будет серый цвет. Если есть - картинка */
-    background-color: var(--card-bg);
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('background.jpg');
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('background.jpg');
     background-size: cover;
     background-position: center;
-    
-    height: 500px; /* Фиксированная высота, чтобы блок не исчезал! */
-    border-radius: 30px;
+    border-radius: 40px; /* Скругление углов */
+    padding: 120px 60px;
+    min-height: 450px;
     display: flex;
     align-items: center;
-    padding-left: 60px;
-    margin-bottom: 60px;
-    position: relative;
     border: 1px solid #222;
 }
 
-.hero-content { max-width: 600px; z-index: 2; }
+.main-logo { width: 100px; margin-bottom: 30px; }
 
-.main-logo { width: 120px; margin-bottom: 20px; display: block; }
+.quote-container { border-left: 4px solid var(--accent); padding-left: 25px; margin-bottom: 40px; }
+.quote { font-size: 1.6rem; font-weight: 700; margin: 0; line-height: 1.3; max-width: 500px; }
+.author { color: #888; margin-top: 10px; font-style: italic; }
 
-.quote-box { margin-bottom: 30px; border-left: 4px solid var(--accent); padding-left: 20px; }
-.quote-text { font-size: 1.4rem; font-weight: 700; line-height: 1.4; margin: 0; }
-.quote-author { color: var(--text-grey); font-style: italic; margin-top: 10px; }
-
-/* Желтая кнопка */
-.btn-yellow {
-    background-color: var(--accent);
+.btn-start {
+    background: var(--accent);
     color: black;
-    padding: 14px 35px;
-    border-radius: 12px;
+    padding: 16px 40px;
+    border-radius: 14px;
     text-decoration: none;
-    font-weight: 800;
-    font-size: 1rem;
+    font-weight: 900;
+    transition: 0.3s;
     display: inline-block;
-    transition: transform 0.2s;
 }
-.btn-yellow:hover { transform: scale(1.05); }
+.btn-start:hover { transform: scale(1.05); }
 
-/* --- НИЖНЯЯ СЕКЦИЯ (Таблица) --- */
-.info-section {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr; /* Левая часть меньше, правая (лаунчер) больше */
-    gap: 40px;
-    align-items: start;
-}
+/* Вторая страница */
+.footer-area { padding: 80px 0; }
+.footer-main { display: flex; justify-content: space-between; margin-bottom: 60px; }
 
-/* Левая колонка */
-.brand-block h2 { font-size: 1.5rem; margin-bottom: 10px; }
-.copyright { color: var(--text-grey); font-size: 0.9rem; line-height: 1.5; }
+.footer-brand h2 { margin: 0; font-size: 1.8rem; }
+.footer-brand .copy { color: #555; font-size: 0.9rem; margin-top: 10px; }
 
-.links-list { margin-top: 40px; }
-.links-list h3 { color: #444; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 15px; }
-.links-list a {
-    display: block;
-    color: #bbb;
-    text-decoration: none;
-    margin-bottom: 12px;
-    font-weight: 500;
-    transition: 0.2s;
-}
-.links-list a:hover { color: var(--accent); padding-left: 5px; }
+.links-title { color: #333; font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; }
+.footer-links a { display: block; color: #aaa; text-decoration: none; margin: 10px 0; transition: 0.2s; }
+.footer-links a:hover { color: white; }
 
-/* --- БЛОК С КОВБОЕМ --- */
-.launcher-block {
-    /* Фон с ковбоем */
-    background-color: var(--card-bg);
-    background-image: linear-gradient(to right, rgba(0,0,0,0.9) 20%, rgba(0,0,0,0.1)), url('cowboy.jpg');
+/* ПЛАШКА ЛАУНЧЕРА (Твой ковбой) */
+.launcher-banner {
+    background: linear-gradient(to right, rgba(0,0,0,0.9), rgba(0,0,0,0.2)), url('cowboy.jpg');
     background-size: cover;
-    background-position: center; /* Центрируем ковбоя */
-    
-    border-radius: 25px;
-    height: 250px; /* Высота блока */
+    background-position: center;
+    border-radius: 30px;
+    padding: 60px;
+    border: 1px solid #333;
+    min-height: 200px;
     display: flex;
     align-items: center;
-    padding-left: 50px;
-    border: 1px solid #333;
 }
 
-.launcher-content h3 { font-size: 1.8rem; margin: 0 0 20px 0; line-height: 1.2; }
-.btn-small { padding: 10px 25px; font-size: 0.9rem; }
+.launcher-text h3 { font-size: 2rem; margin: 0 0 25px 0; }
 
-/* Подвал */
-.footer-legal { text-align: right; margin-top: 40px; padding-top: 20px; border-top: 1px solid #111; }
-.footer-legal a { color: #333; text-decoration: none; font-size: 0.8rem; }
+.btn-download {
+    background: var(--accent);
+    color: black;
+    padding: 12px 30px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
 
-/* Адаптация для мобильных */
+.legal { text-align: right; color: #222; margin-top: 40px; cursor: default; }
+
+/* Адаптивность для телефонов */
 @media (max-width: 768px) {
-    .info-section { grid-template-columns: 1fr; } /* В одну колонку на телефоне */
-    .hero-card { padding: 20px; height: auto; padding-top: 100px; padding-bottom: 100px; }
+    .page-wrapper { padding: 0 15px; }
+    .footer-main { flex-direction: column; gap: 40px; }
+    .hero-card { padding: 60px 30px; }
 }
