@@ -143,6 +143,7 @@
             cursor: pointer;
             left: -200px;
             top: -200px;
+            user-select: none;
         }
 
         .tumbleweed-bounce {
@@ -290,26 +291,28 @@
             
             const w = window.innerWidth;
             const h = window.innerHeight;
-            const padding = 150; 
-            const safeMargin = 0.15; // 15% высоты/ширины экрана по краям
+            const padding = 100; // Уменьшил отступ появления
+            
+            // Зоны: теперь они шире (25% вместо 15%), чтобы объект был ближе к центру
+            const safeMargin = 0.25; 
 
-            // Решаем: будет ли движение горизонтальным (по верху/низу) или вертикальным (по бокам)
             const isHorizontal = Math.random() > 0.4; 
             let startX, startY, endX, endY;
 
             if (isHorizontal) {
-                // Движение только по верхней или нижней кромке (избегаем центра по Y)
+                // Движение в верхней или нижней четверти экрана
                 const isTop = Math.random() > 0.5;
-                startY = isTop ? Math.random() * (h * safeMargin) : h - (Math.random() * (h * safeMargin));
-                endY = startY + (Math.random() * 40 - 20); // Небольшой наклон, но в той же зоне
+                // Добавили фиксированный минимальный отступ от края (50px), чтобы не прилипало к рамке
+                startY = isTop ? 50 + Math.random() * (h * safeMargin - 50) : h - 50 - (Math.random() * (h * safeMargin - 50));
+                endY = startY + (Math.random() * 100 - 50); // Более заметный наклон
                 
                 startX = Math.random() > 0.5 ? -padding : w + padding;
                 endX = startX < 0 ? w + padding : -padding;
             } else {
-                // Движение только по левой или правой кромке (избегаем центра по X)
+                // Движение в левой или правой четверти экрана
                 const isLeft = Math.random() > 0.5;
-                startX = isLeft ? Math.random() * (w * safeMargin) : w - (Math.random() * (w * safeMargin));
-                endX = startX + (Math.random() * 40 - 20);
+                startX = isLeft ? 50 + Math.random() * (w * safeMargin - 50) : w - 50 - (Math.random() * (w * safeMargin - 50));
+                endX = startX + (Math.random() * 100 - 50);
                 
                 startY = Math.random() > 0.5 ? -padding : h + padding;
                 endY = startY < 0 ? h + padding : -padding;
@@ -322,8 +325,7 @@
 
             tumbleweed.offsetHeight;
 
-            // Длительность полета (ускорили, чтобы не надоедало)
-            const duration = 4000 + Math.random() * 4000;
+            const duration = 5000 + Math.random() * 3000; // Чуть помедленнее для удобства клика
             
             tumbleweed.style.transition = `left ${duration}ms linear, top ${duration}ms linear`;
             tumbleweed.style.left = endX + 'px';
@@ -337,8 +339,11 @@
             }, duration);
         }
 
-        tumbleweed.addEventListener('click', function() {
+        tumbleweed.addEventListener('click', function(e) {
             if (tumbleweedImg.style.opacity === '0') return;
+
+            // Предотвращаем клики сквозь объект (если нужно)
+            e.stopPropagation();
 
             count++;
             scoreElement.innerText = count;
@@ -351,7 +356,6 @@
             tumbleweed.style.left = rect.left + 'px';
             tumbleweed.style.top = rect.top + 'px';
             
-            // Перезапуск GIF взрыва
             const currentExplosionSrc = explosionGif.src;
             explosionGif.src = '';
             explosionGif.src = currentExplosionSrc;
