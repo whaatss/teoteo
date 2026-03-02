@@ -169,49 +169,75 @@
            АНИМАЦИЯ ПЕРЕКАТИ-ПОЛЯ (TUMBLEWEED)
         ========================================= */
         
-        /* 1. Контейнер: двигает объект справа налево по всему экрану */
         .tumbleweed-container {
             position: fixed;
-            bottom: 5%; /* Летает в нижней части экрана */
-            right: -150px; /* Стартует за правым краем экрана */
-            z-index: 9999; /* Поверх всего */
-            pointer-events: none; /* Пропускает клики мыши сквозь себя */
-            animation: move-left 18s linear infinite; /* 18 секунд летит, потом повторяет */
+            bottom: 5%;
+            right: -150px;
+            z-index: 9999;
+            pointer-events: auto; /* Позволяем нажимать */
+            cursor: pointer;
+            animation: move-left 18s linear infinite;
         }
 
-        /* 2. Внутренний блок: отвечает за хаотичные прыжки вверх-вниз */
         .tumbleweed-bounce {
             animation: bounce-chaotic 8s ease-in-out infinite;
         }
 
-        /* 3. Сама картинка: крутится вокруг своей оси */
         .tumbleweed-img {
-            width: 80px; /* Размер перекати-поля */
+            width: 80px;
             height: auto;
-            opacity: 0.85; /* Немного прозрачное, чтобы вписаться в фон */
+            opacity: 0.85;
             animation: spin-roll 3s linear infinite;
-            filter: drop-shadow(0px 10px 10px rgba(0,0,0,0.5)); /* Тень для объема */
+            filter: drop-shadow(0px 10px 10px rgba(0,0,0,0.5));
+            transition: opacity 0.2s ease;
         }
 
-        /* Ключевые кадры полета влево */
+        /* Эффект взрыва */
+        .explosion {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            pointer-events: none;
+            display: none;
+            z-index: 10000;
+        }
+
+        /* Золотой слиток */
+        .gold-ingot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            pointer-events: none;
+            display: none;
+            z-index: 10001;
+        }
+
+        @keyframes ingot-float {
+            0% { transform: translate(-50%, -50%) translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translate(-50%, -50%) translateY(-100px) rotate(20deg); opacity: 0; }
+        }
+
         @keyframes move-left {
             0% { right: -150px; }
-            100% { right: 110vw; } /* Улетает за левый край экрана */
+            100% { right: 110vw; }
         }
 
-        /* Ключевые кадры прыжков (реалистичная физика отскока) */
         @keyframes bounce-chaotic {
-            0%, 100% { transform: translateY(0px) scaleY(0.95); } /* Касается земли, чуть сплющивается */
-            10% { transform: translateY(-150px) scaleY(1.05); } /* Высокий прыжок */
+            0%, 100% { transform: translateY(0px) scaleY(0.95); }
+            10% { transform: translateY(-150px) scaleY(1.05); }
             25% { transform: translateY(0px) scaleY(0.95); }
-            40% { transform: translateY(-80px) scaleY(1); } /* Средний прыжок */
+            40% { transform: translateY(-80px) scaleY(1); }
             55% { transform: translateY(0px) scaleY(0.95); }
-            65% { transform: translateY(-30px) scaleY(1); } /* Мелкий подскок */
+            65% { transform: translateY(-30px) scaleY(1); }
             75% { transform: translateY(0px) scaleY(0.95); }
-            85% { transform: translateY(-180px) scaleY(1.05); } /* Очень высокий прыжок ветром */
+            85% { transform: translateY(-180px) scaleY(1.05); }
         }
 
-        /* Ключевые кадры вращения (крутится влево) */
         @keyframes spin-roll {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(-360deg); }
@@ -285,14 +311,54 @@
         </div>
     </section>
 
-    <!-- ==============================================
-         АНИМИРОВАННОЕ ПЕРЕКАТИ-ПОЛЕ (ДОБАВЛЕНО СЮДА)
-         ============================================== -->
-    <div class="tumbleweed-container">
+    <!-- АНИМИРОВАННОЕ ПЕРЕКАТИ-ПОЛЕ С ЭФФЕКТАМИ -->
+    <div class="tumbleweed-container" id="tumbleweed">
         <div class="tumbleweed-bounce">
-            <img src="1691660596_grizly-club-p-kartinki-perekati-pole-bez-fona-47.png" alt="Перекати-поле" class="tumbleweed-img">
+            <img src="1691660596_grizly-club-p-kartinki-perekati-pole-bez-fona-47.png" alt="Перекати-поле" class="tumbleweed-img" id="tumbleweed-img">
+            <!-- Эффект взрыва (GIF) -->
+            <img src="d2eea3d794d8385d8523ebab4d3f2e4d.gif" alt="Взрыв" class="explosion" id="explosion-gif">
+            <!-- Золотой слиток -->
+            <img src="sr2327cb1dd7ff0.png" alt="Золотой слиток" class="gold-ingot" id="gold-ingot">
         </div>
     </div>
+
+    <script>
+        const tumbleweed = document.getElementById('tumbleweed');
+        const tumbleweedImg = document.getElementById('tumbleweed-img');
+        const explosionGif = document.getElementById('explosion-gif');
+        const goldIngot = document.getElementById('gold-ingot');
+
+        tumbleweed.addEventListener('click', function() {
+            // Если перекати-поле уже взорвано, игнорируем
+            if (tumbleweedImg.style.opacity === '0') return;
+
+            // 1. Прячем перекати-поле
+            tumbleweedImg.style.opacity = '0';
+            
+            // 2. Показываем взрыв
+            explosionGif.style.display = 'block';
+            
+            // 3. Показываем золотой слиток и запускаем его анимацию
+            goldIngot.style.display = 'block';
+            goldIngot.style.animation = 'ingot-float 2s forwards ease-out';
+
+            // 4. Через 1 секунду убираем взрыв
+            setTimeout(() => {
+                explosionGif.style.display = 'none';
+            }, 1000);
+
+            // 5. Через 2 секунды (когда слиток исчезнет) сбрасываем слиток
+            setTimeout(() => {
+                goldIngot.style.display = 'none';
+                goldIngot.style.animation = '';
+            }, 2000);
+
+            // 6. Через 3 секунды "возрождаем" перекати-поле
+            setTimeout(() => {
+                tumbleweedImg.style.opacity = '0.85';
+            }, 3000);
+        });
+    </script>
 
 </body>
 </html>
