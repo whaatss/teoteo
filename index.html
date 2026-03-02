@@ -10,63 +10,53 @@
 <body>
 
     <nav class="navbar">
-        <div class="nav-container">
+        <div class="container">
             <span class="logo-text">TEOTEO</span>
             <div class="nav-links">
                 <a href="https://discord.gg/v2ZjPARPdQ" target="_blank">Discord</a>
-                <a href="#">Форум</a>
             </div>
         </div>
     </nav>
 
-    <div class="main-container">
+    <div class="page-wrapper">
         
-        <section class="card hero-card" id="hero">
+        <section class="hero-card">
             <div class="hero-content">
-                <img src="logo.png" alt="TEOTEO Logo" class="main-logo">
-                
-                <div class="quote-box">
-                    <p class="quote-text">«В этом мире есть два типа людей:<br>те, кто входят через дверь<br>и те, кто входят через окно»</p>
-                    <p class="quote-author">— Сказал мэтр</p>
+                <img src="logo.png" alt="Logo" class="main-logo">
+                <div class="quote-container">
+                    <p class="quote">«В этом мире есть два типа людей: те, кто входят через дверь и те, кто входят через окно»</p>
+                    <p class="author">— Сказал мэтр</p>
                 </div>
-
-                <a href="#launcher-anchor" class="btn-yellow">Начать игру ▶</a>
+                <a href="#footer" class="btn-start">Начать игру ▶</a>
             </div>
         </section>
 
-        <div id="launcher-anchor"></div>
-
-        <div class="info-section">
-            
-            <div class="info-left">
-                <div class="brand-block">
+        <footer class="footer-area" id="footer">
+            <div class="footer-main">
+                <div class="footer-brand">
                     <h2>TEOTEO</h2>
-                    <p class="copyright">© TEOTEO 2026<br>Доверимся тем, кто копирует нас.</p>
+                    <p class="copy">© TEOTEO 2026<br>Доверимся тем, кто копирует нас.</p>
                 </div>
-                
-                <div class="links-list">
-                    <h3>РЕСУРСЫ</h3>
-                    <a href="rules.html">📄 Правила</a>
-                    <a href="http://твой-ip:8100" target="_blank">🗺 Карта</a>
-                    <a href="#">💰 Донат</a>
-                    <a href="https://discord.gg/v2ZjPARPdQ" target="_blank">💬 Discord</a>
-                    <a href="#" target="_blank">▶ YouTube</a>
+
+                <div class="footer-links">
+                    <p class="links-title">РЕСУРСЫ</p>
+                    <a href="rules.html">Правила</a>
+                    <a href="http://твой-ip:8100" target="_blank">Карта</a>
+                    <a href="#">Донат</a>
+                    <a href="https://discord.gg/v2ZjPARPdQ" target="_blank">Discord</a>
+                    <a href="#" target="_blank">YouTube</a>
                 </div>
             </div>
 
-            <div class="launcher-block" id="cowboy">
-                <div class="launcher-content">
+            <div class="launcher-banner">
+                <div class="launcher-text">
                     <h3>Наш собственный<br>лаунчер для игры</h3>
-                    <a href="launcher.exe" download class="btn-yellow btn-small">Загрузить ⬇</a>
+                    <a href="launcher.exe" download class="btn-download">Загрузить ⬇</a>
                 </div>
             </div>
-
-        </div>
-
-        <div class="footer-legal">
-            <a href="#">Оферта</a>
-        </div>
-
+            
+            <p class="legal">Оферта</p>
+        </footer>
     </div>
 
 </body>
