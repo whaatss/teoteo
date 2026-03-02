@@ -3,76 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEOTEO — Minecraft сумасшествие!</title>
+    <title>TEOTEO — Wild West Minecraft</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="container nav-container">
-            <div class="logo">
-                <img src="logo.png" alt="Logo">
-                <span>TEOTEO</span>
+    <!-- Навигация в стиле Minefite -->
+    <header class="main-header">
+        <div class="container header-flex">
+            <div class="logo-group">
+                <img src="logo.png" alt="TEOTEO Logo" class="logo-img" onerror="this.style.display='none'">
+                <span class="logo-text">TEOTEO</span>
             </div>
-            <div class="nav-links">
-                <a href="#">Форум</a>
-                <a href="#">Донат</a>
-            </div>
+            <nav class="nav-bar">
+                <a href="#" class="nav-link">Главная</a>
+                <a href="#" class="nav-link">Вики</a>
+                <a href="#" class="nav-link">Донат</a>
+                <a href="https://discord.gg/v2ZjPARPdQ" class="nav-link discord-btn">Discord</a>
+            </nav>
         </div>
-    </nav>
+    </header>
 
-    <section class="hero-screen">
-        <div class="container">
-            <div class="hero-card">
-                <div class="hero-content">
-                    <h1>TEOTEO — <br><span class="highlight">Minecraft сумасшествие!</span></h1>
-                    <p class="description">
-                        Мир в котором может твориться хаос и царить гармония! <br>
-                        Мир где можно войти в дверь либо в окно! Дикий Запад.
-                    </p>
-                    <div class="hero-btns">
-                        <a href="#start-section" class="btn-main">Начать игру ▶</a>
-                        <a href="#" class="btn-outline">Мини гайд</a>
+    <main>
+        <!-- Главный экран с эффектом стекла -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-card">
+                    <div class="hero-content">
+                        <div class="status-badge">
+                            <span class="dot"></span> 1.20.1 • RP PROJECT
+                        </div>
+                        <h1>ДИКИЙ ЗАПАД <br><span class="gradient-text">БЕЗ ГРАНИЦ</span></h1>
+                        <p class="hero-desc">
+                            Мир, где хаос встречается с гармонией. Войди в дверь или в окно — здесь правила пишешь ты сам. Стань легендой фронтира.
+                        </p>
+                        <div class="hero-btns">
+                            <a href="#launcher" class="btn-primary">Начать игру</a>
+                            <a href="#" class="btn-secondary">О сервере</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="start-section" class="bottom-screen">
-        <div class="container grid-layout">
-            
-            <div class="info-side">
-                <div class="footer-brand">
-                    <img src="logo.png" alt="Logo">
-                    <h2>TEOTEO</h2>
-                    <p class="copy">© 2026. Все права защищены.<br>Доверимся тем, кто копирует нас.</p>
-                </div>
+        <!-- Секция ресурсов и лаунчера -->
+        <section id="launcher" class="bottom-section">
+            <div class="container grid-container">
                 
-                <div class="resources-links">
-                    <h3>РЕСУРСЫ</h3>
-                    <a href="rules.html">Правила</a>
-                    <a href="#" target="_blank">Карта BlueMap</a>
-                    <a href="#">Донат</a>
-                    <a href="https://discord.gg/v2ZjPARPdQ" target="_blank">Discord</a>
-                    <a href="#" target="_blank">YouTube</a>
+                <!-- Информация о проекте -->
+                <div class="glass-panel info-panel">
+                    <div class="brand-footer">
+                        <img src="logo.png" alt="Logo" class="footer-logo" onerror="this.style.display='none'">
+                        <h2>TEOTEO</h2>
+                        <p class="copyright">© 2026. Доверимся тем, кто копирует нас. Все права защищены.</p>
+                    </div>
+                    
+                    <div class="footer-links">
+                        <div class="link-group">
+                            <h4>ПРОЕКТ</h4>
+                            <a href="rules.html">Правила</a>
+                            <a href="#">Карта BlueMap</a>
+                            <a href="#">YouTube</a>
+                        </div>
+                        <div class="link-group">
+                            <h4>ПОДДЕРЖКА</h4>
+                            <a href="#">Оферта</a>
+                            <a href="#">Донат</a>
+                            <a href="#">Discord</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="launcher-card">
-                <div class="launcher-content">
-                    <h3>Наш собственный<br>лаунчер для игры</h3>
-                    <a href="launcher.exe" download class="btn-main small-btn">Загрузить ⬇</a>
+                <!-- Карточка загрузки лаунчера -->
+                <div class="glass-panel download-panel">
+                    <div class="download-content">
+                        <h3>ИГРАЙ ЧЕРЕЗ<br><span class="orange-glow">НАШ ЛАУНЧЕР</span></h3>
+                        <p>Собственная сборка с модами для полного погружения в атмосферу вестерна.</p>
+                        <a href="launcher.exe" download class="btn-download">
+                            Загрузить клиент 
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        </a>
+                    </div>
                 </div>
-            </div>
 
-        </div>
-        
-        <div class="container footer-legal">
-            <a href="#">Оферта</a>
-        </div>
-    </section>
+            </div>
+        </section>
+    </main>
 
 </body>
 </html>
