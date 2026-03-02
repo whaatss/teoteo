@@ -114,6 +114,8 @@
             background: var(--accent); color: #000; padding: 18px 45px; border-radius: 12px;
             text-decoration: none; font-weight: 800; font-size: 1.1rem; display: inline-block;
             transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;
+            position: relative;
+            z-index: 10; /* Кнопки всегда выше перекати-поля */
         }
         .btn-main:hover { transform: translateY(-3px); box-shadow: 0 15px 25px var(--accent-glow); }
 
@@ -136,10 +138,9 @@
         
         .tumbleweed-container {
             position: fixed;
-            z-index: 9999;
+            z-index: 5; /* Ниже кнопок, но выше фона */
             pointer-events: auto;
             cursor: pointer;
-            /* Позиционирование будет управляться через JS */
             left: -200px;
             top: -200px;
         }
@@ -168,7 +169,7 @@
             height: auto;
             pointer-events: none;
             display: none;
-            z-index: 10000;
+            z-index: 12;
         }
 
         /* Золотой слиток */
@@ -180,7 +181,7 @@
             width: 50px;
             pointer-events: none;
             display: none;
-            z-index: 10001;
+            z-index: 13;
             image-rendering: pixelated;
         }
 
@@ -214,7 +215,7 @@
             <div class="scoreboard-title">Разбито</div>
             <div class="score-value" id="score-count">0</div>
         </div>
-        <img src="sr2327cb1dd7ff0.png" width="30" alt="Gold Ingot" style="image-rendering: pixelated;">
+        <img src="sr2327cb1dd7ff0.png" width="30" alt="Золотой слиток" style="image-rendering: pixelated;">
     </div>
 
     <nav class="navbar">
@@ -285,60 +286,49 @@
         let activeAnimation = null;
 
         function spawnTumbleweed() {
-            // Сбрасываем видимость
             tumbleweedImg.style.opacity = '0.85';
             
             const w = window.innerWidth;
             const h = window.innerHeight;
-            const padding = 150; // Отступ за пределами экрана
+            const padding = 150; 
+            const safeMargin = 0.15; // 15% высоты/ширины экрана по краям
 
-            // Выбираем случайную сторону появления: 0-верх, 1-право, 2-низ, 3-лево
-            const side = Math.floor(Math.random() * 4);
+            // Решаем: будет ли движение горизонтальным (по верху/низу) или вертикальным (по бокам)
+            const isHorizontal = Math.random() > 0.4; 
             let startX, startY, endX, endY;
 
-            switch(side) {
-                case 0: // Сверху
-                    startX = Math.random() * w;
-                    startY = -padding;
-                    endX = Math.random() * w;
-                    endY = h + padding;
-                    break;
-                case 1: // Справа
-                    startX = w + padding;
-                    startY = Math.random() * h;
-                    endX = -padding;
-                    endY = Math.random() * h;
-                    break;
-                case 2: // Снизу
-                    startX = Math.random() * w;
-                    startY = h + padding;
-                    endX = Math.random() * w;
-                    endY = -padding;
-                    break;
-                case 3: // Слева
-                    startX = -padding;
-                    startY = Math.random() * h;
-                    endX = w + padding;
-                    endY = Math.random() * h;
-                    break;
+            if (isHorizontal) {
+                // Движение только по верхней или нижней кромке (избегаем центра по Y)
+                const isTop = Math.random() > 0.5;
+                startY = isTop ? Math.random() * (h * safeMargin) : h - (Math.random() * (h * safeMargin));
+                endY = startY + (Math.random() * 40 - 20); // Небольшой наклон, но в той же зоне
+                
+                startX = Math.random() > 0.5 ? -padding : w + padding;
+                endX = startX < 0 ? w + padding : -padding;
+            } else {
+                // Движение только по левой или правой кромке (избегаем центра по X)
+                const isLeft = Math.random() > 0.5;
+                startX = isLeft ? Math.random() * (w * safeMargin) : w - (Math.random() * (w * safeMargin));
+                endX = startX + (Math.random() * 40 - 20);
+                
+                startY = Math.random() > 0.5 ? -padding : h + padding;
+                endY = startY < 0 ? h + padding : -padding;
             }
 
-            // Устанавливаем начальную позицию
+            // Установка позиции
             tumbleweed.style.transition = 'none';
             tumbleweed.style.left = startX + 'px';
             tumbleweed.style.top = startY + 'px';
 
-            // Принудительная перерисовка
             tumbleweed.offsetHeight;
 
-            // Длительность полета от 8 до 15 секунд
-            const duration = 8000 + Math.random() * 7000;
+            // Длительность полета (ускорили, чтобы не надоедало)
+            const duration = 4000 + Math.random() * 4000;
             
             tumbleweed.style.transition = `left ${duration}ms linear, top ${duration}ms linear`;
             tumbleweed.style.left = endX + 'px';
             tumbleweed.style.top = endY + 'px';
 
-            // Если объект улетел за экран сам по себе
             if (activeAnimation) clearTimeout(activeAnimation);
             activeAnimation = setTimeout(() => {
                 if (tumbleweedImg.style.opacity !== '0') {
@@ -350,30 +340,26 @@
         tumbleweed.addEventListener('click', function() {
             if (tumbleweedImg.style.opacity === '0') return;
 
-            // 1. Увеличиваем счет
             count++;
             scoreElement.innerText = count;
             scoreboard.classList.add('bump');
             setTimeout(() => scoreboard.classList.remove('bump'), 200);
 
-            // 2. Скрываем перекати-поле и останавливаем движение
             tumbleweedImg.style.opacity = '0';
             const rect = tumbleweed.getBoundingClientRect();
             tumbleweed.style.transition = 'none';
             tumbleweed.style.left = rect.left + 'px';
             tumbleweed.style.top = rect.top + 'px';
             
-            // 3. Запускаем взрыв
+            // Перезапуск GIF взрыва
             const currentExplosionSrc = explosionGif.src;
             explosionGif.src = '';
             explosionGif.src = currentExplosionSrc;
             explosionGif.style.display = 'block';
             
-            // 4. Показываем золото
             goldIngot.style.display = 'block';
             goldIngot.style.animation = 'ingot-float 1.5s forwards ease-out';
 
-            // 5. Очистка эффектов
             setTimeout(() => {
                 explosionGif.style.display = 'none';
             }, 1000);
@@ -381,12 +367,10 @@
             setTimeout(() => {
                 goldIngot.style.display = 'none';
                 goldIngot.style.animation = '';
-                // 6. Появление в новом месте через небольшую паузу
                 spawnTumbleweed();
             }, 1500);
         });
 
-        // Запуск первого перекати-поля
         window.onload = spawnTumbleweed;
     </script>
 
