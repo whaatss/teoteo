@@ -5,59 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TEOTEO Project</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <nav class="navbar">
-        <div class="logo-text">TEOTEO</div>
+        <div class="nav-container">
+            <span class="logo-text">TEOTEO</span>
+            <div class="nav-links">
+                <a href="https://discord.gg/v2ZjPARPdQ" target="_blank">Discord</a>
+                <a href="#">Форум</a>
+            </div>
+        </div>
     </nav>
 
-    <div class="container">
-        <section class="hero-card">
+    <div class="main-container">
+        
+        <section class="card hero-card" id="hero">
             <div class="hero-content">
-                <img src="logo.png" alt="TEOTEO" class="main-logo">
+                <img src="logo.png" alt="TEOTEO Logo" class="main-logo">
                 
-                <p class="quote">«В этом мире есть два типа людей: те, кто входят через дверь и те, кто входят через окно»<br> <span class="author">— Сказал мэтр</span></p>
-                
-                <div class="hero-btns">
-                    <a href="#footer-anchor" class="btn-main">Начать игру ▶</a>
+                <div class="quote-box">
+                    <p class="quote-text">«В этом мире есть два типа людей:<br>те, кто входят через дверь<br>и те, кто входят через окно»</p>
+                    <p class="quote-author">— Сказал мэтр</p>
                 </div>
+
+                <a href="#launcher-anchor" class="btn-yellow">Начать игру ▶</a>
             </div>
         </section>
-    </div>
 
-    <div id="footer-anchor"></div>
+        <div id="launcher-anchor"></div>
 
-    <footer class="footer-section">
-        <div class="footer-top">
-            <div class="brand">
-                <h2>TEOTEO</h2>
-                <p>© TEOTEO 2026<br>Доверимся тем, кто копирует нас.</p>
-            </div>
-
-            <div class="links-group">
-                <div class="column">
+        <div class="info-section">
+            
+            <div class="info-left">
+                <div class="brand-block">
+                    <h2>TEOTEO</h2>
+                    <p class="copyright">© TEOTEO 2026<br>Доверимся тем, кто копирует нас.</p>
+                </div>
+                
+                <div class="links-list">
                     <h3>РЕСУРСЫ</h3>
-                    <a href="rules.html">Правила</a>
-                    <a href="http://твой-ip:8100" target="_blank">Карта</a>
-                    <a href="#">Донат</a>
-                    <a href="https://discord.gg/v2ZjPARPdQ" target="_blank">Discord</a>
-                    <a href="#" target="_blank">YouTube</a>
+                    <a href="rules.html">📄 Правила</a>
+                    <a href="http://твой-ip:8100" target="_blank">🗺 Карта</a>
+                    <a href="#">💰 Донат</a>
+                    <a href="https://discord.gg/v2ZjPARPdQ" target="_blank">💬 Discord</a>
+                    <a href="#" target="_blank">▶ YouTube</a>
                 </div>
             </div>
+
+            <div class="launcher-block" id="cowboy">
+                <div class="launcher-content">
+                    <h3>Наш собственный<br>лаунчер для игры</h3>
+                    <a href="launcher.exe" download class="btn-yellow btn-small">Загрузить ⬇</a>
+                </div>
+            </div>
+
         </div>
 
-        <div class="launcher-card">
-            <div class="launcher-content">
-                <h3>Наш собственный<br>лаунчер для игры</h3>
-                <a href="launcher.exe" download class="btn-download">Загрузить <span>⬇</span></a>
-            </div>
-        </div>
-        
-        <div class="legal">
+        <div class="footer-legal">
             <a href="#">Оферта</a>
         </div>
-    </footer>
+
+    </div>
 
 </body>
 </html>
