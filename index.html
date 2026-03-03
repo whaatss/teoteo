@@ -6,18 +6,19 @@
     <title>TEOTEO — Minecraft сумасшествие!</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
-        /* --- ПЕРЕМЕННЫЕ --- */
+        /* --- ПЕРЕМЕННЫЕ (Оранжевая палитра) --- */
         :root {
-            --bg-black: #030303; 
+            --bg-black: #050505;
             --card-bg: #0c0c0c;
-            --accent: #ff6b00; 
-            --accent-glow: rgba(255, 107, 0, 0.4); 
+            --accent: #ff6b00; /* Переключено на оранжевый */
+            --accent-glow: rgba(255, 107, 0, 0.4);
             --text-white: #ffffff;
             --text-muted: #888888;
+            --border: rgba(255, 255, 255, 0.08);
         }
 
         html { 
-            scroll-behavior: smooth; 
+            scroll-behavior: smooth;
         }
 
         body {
@@ -26,12 +27,13 @@
             font-family: 'Inter', sans-serif;
             margin: 0;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 30px;
+            padding: 0 25px;
         }
 
         /* --- НАВИГАЦИЯ --- */
@@ -39,68 +41,138 @@
             position: fixed;
             width: 100%;
             top: 0;
-            padding: 20px 0;
-            z-index: 100;
-            background: rgba(3, 3, 3, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px 0;
+            z-index: 1000;
+            background: rgba(5, 5, 5, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
         }
 
         .nav-container { display: flex; justify-content: space-between; align-items: center; }
-        .logo { display: flex; align-items: center; gap: 12px; font-weight: 900; font-size: 1.4rem; }
-        .logo img { width: 35px; border-radius: 8px; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 35px; font-weight: 600; transition: 0.3s; }
-        .nav-links a:hover { color: var(--text-white); }
+        
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            font-weight: 900; 
+            font-size: 1.5rem; 
+            letter-spacing: -1px;
+            color: var(--text-white);
+            text-decoration: none;
+        }
+        .logo span { color: var(--accent); }
+        .logo img { width: 40px; border-radius: 10px; }
 
-        /* --- SCOREBOARD --- */
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { 
+            color: var(--text-muted); 
+            text-decoration: none; 
+            font-weight: 600; 
+            font-size: 0.95rem;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .nav-links a:hover { color: var(--accent); }
+
+        /* --- СЧЕТЧИК (SCOREBOARD) --- */
         .scoreboard {
             position: fixed;
-            top: 100px;
+            top: 90px;
             right: 30px;
-            background: rgba(12, 12, 12, 0.9);
+            background: rgba(12, 12, 12, 0.8);
             border: 2px solid var(--accent);
-            padding: 12px 20px;
-            border-radius: 15px;
-            z-index: 90;
-            box-shadow: 0 0 20px var(--accent-glow);
+            padding: 10px 20px;
+            border-radius: 20px;
+            z-index: 900;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 15px var(--accent-glow);
             display: flex;
             align-items: center;
             gap: 12px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
         }
+        .scoreboard:hover { transform: scale(1.05); }
         .score-value { font-size: 1.8rem; font-weight: 900; color: var(--accent); }
+        .score-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
 
-        /* --- HERO --- */
+        /* --- HERO СЕКЦИЯ --- */
         .hero-screen {
-            min-height: 100vh; display: flex; align-items: center;
-            padding: 120px 0 60px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 80px;
+            position: relative;
         }
+
         .hero-card {
-            background: linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1627398242454-45a1465c2479?auto=format&fit=crop&q=80&w=1920');
-            background-size: cover; background-position: center;
-            border-radius: 30px; padding: 100px 60px; border: 1px solid rgba(255,255,255,0.05);
+            width: 100%;
+            background: linear-gradient(135deg, rgba(12, 12, 12, 0.95) 0%, rgba(12, 12, 12, 0.7) 100%), 
+                        url('https://images.unsplash.com/photo-1627398242454-45a1465c2479?auto=format&fit=crop&q=80&w=1920');
+            background-size: cover;
+            background-position: center;
+            border-radius: 40px;
+            padding: 120px 80px;
+            border: 1px solid var(--border);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            position: relative;
+            overflow: hidden;
         }
-        .hero-content h1 { font-size: 4rem; margin: 0; font-weight: 900; line-height: 1.1; }
-        .highlight { color: var(--accent); text-shadow: 0 0 15px var(--accent-glow); }
-        .description { font-size: 1.2rem; color: #ccc; margin: 25px 0 40px; max-width: 600px; }
+
+        .hero-content { position: relative; z-index: 2; }
+        .hero-content h1 { 
+            font-size: clamp(2.5rem, 8vw, 4.5rem); 
+            margin: 0; 
+            font-weight: 900; 
+            line-height: 1; 
+            letter-spacing: -2px;
+        }
+        .highlight { color: var(--accent); text-shadow: 0 0 30px var(--accent-glow); }
+        
+        .description { 
+            font-size: 1.2rem; 
+            color: #ccc; 
+            margin: 30px 0 45px; 
+            max-width: 550px; 
+            line-height: 1.6;
+        }
+
+        .hero-btns { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
 
         /* --- КНОПКИ --- */
         .btn-main {
-            background: var(--accent); color: #000; padding: 16px 35px; border-radius: 12px;
-            text-decoration: none; font-weight: 800; text-transform: uppercase; transition: 0.3s;
+            background: var(--accent);
+            color: #000;
+            padding: 20px 45px;
+            border-radius: 18px;
+            text-decoration: none;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: inline-block;
+            box-shadow: 0 10px 25px var(--accent-glow);
         }
-        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 10px 20px var(--accent-glow); }
+        .btn-main:hover { transform: translateY(-5px); box-shadow: 0 15px 35px var(--accent-glow); }
 
-        /* --- СЕКЦИЯ С КАРТИНКАМИ (КАК MINEFITE) --- */
-        .showcase-section {
-            padding: 100px 0;
-            overflow: hidden;
+        .btn-outline {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 18px 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 18px;
+            transition: 0.3s;
         }
+        .btn-outline:hover { background: rgba(255,255,255,0.05); border-color: #fff; }
+
+        /* --- MINEFITE STYLE REVEAL --- */
+        .showcase-section { padding: 100px 0; }
+        
         .reveal {
             opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform: translateY(60px);
+            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .reveal.active {
             opacity: 1;
@@ -111,230 +183,351 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
-            margin-top: 50px;
+            margin-top: 60px;
         }
+        
         .showcase-item {
             position: relative;
-            border-radius: 20px;
+            border-radius: 30px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: var(--card-bg);
+            height: 450px;
+            border: 1px solid var(--border);
+            background: #111;
         }
         .showcase-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
-            transition: transform 0.5s ease;
+            transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        .showcase-item:hover img { transform: scale(1.05); }
+        .showcase-item:hover img { transform: scale(1.1); }
 
-        .reveal-left { transform: translateX(-50px); opacity: 0; transition: 1s; }
-        .reveal-right { transform: translateX(50px); opacity: 0; transition: 1s; }
-        .reveal-left.active, .reveal-right.active { transform: translateX(0); opacity: 1; }
-
-        /* --- СЕКЦИЯ С ВИДЕО --- */
-        .video-section {
-            padding: 80px 0;
-            text-align: center;
-        }
-        .video-container {
-            position: relative;
-            width: 100%;
-            max-width: 900px;
-            margin: 40px auto;
-            border-radius: 25px;
+        /* --- VIDEO SECTION --- */
+        .video-section { padding: 100px 0; background: #080808; }
+        .video-wrapper {
+            max-width: 1000px;
+            margin: 50px auto 0;
+            border-radius: 35px;
             overflow: hidden;
-            border: 4px solid var(--card-bg);
-            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            border: 1px solid var(--border);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
             aspect-ratio: 16/9;
         }
-        .video-container iframe {
+        .video-wrapper iframe { width: 100%; height: 100%; border: none; }
+
+        /* --- LAUNCHER --- */
+        .launcher-card {
+            background: linear-gradient(135deg, #111 0%, #050505 100%);
+            border-radius: 40px;
+            padding: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border);
+            margin-top: 100px;
+        }
+        .launcher-card h2 { font-size: 3rem; margin: 0; letter-spacing: -1px; }
+
+        /* --- ПЕРЕКАТИ-ПОЛЕ (GAMES) --- */
+        #tumbleweed {
+            position: fixed;
+            width: 80px;
+            height: 80px;
+            z-index: 800; /* Под навигацией и счетчиком */
+            cursor: pointer;
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+        
+        .tumbleweed-body {
             width: 100%;
             height: 100%;
-            border: none;
+            animation: bounce-loop 1.5s ease-in-out infinite alternate;
         }
 
-        /* --- ЛАУНЧЕР --- */
-        .launcher-section { padding: 100px 0; }
-        .launcher-card {
-            background: #111; border-radius: 30px; padding: 60px;
-            display: flex; justify-content: space-between; align-items: center;
-            border: 1px solid rgba(255,255,255,0.05);
+        .tumbleweed-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            animation: spin-roll 2s linear infinite;
         }
 
-        /* --- TUMBLEWEED (ПЕРЕКАТИ-ПОЛЕ) --- */
-        .tumbleweed-container {
-            position: fixed; z-index: 5; pointer-events: auto; cursor: pointer;
-            left: -200px; top: -200px;
-        }
-        .tumbleweed-bounce { animation: bounce-chaotic 8s infinite; }
-        .tumbleweed-img { width: 80px; animation: spin-roll 3s linear infinite; }
-        .explosion { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 150px; display: none; }
-        .gold-ingot { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; display: none; image-rendering: pixelated; }
-
-        @keyframes bounce-chaotic {
-            0%, 100% { transform: translateY(0); }
-            20% { transform: translateY(-100px); }
-            40% { transform: translateY(0); }
-            60% { transform: translateY(-50px); }
-            80% { transform: translateY(0); }
-        }
-        @keyframes spin-roll { 0% { transform: rotate(0); } 100% { transform: rotate(-360deg); } }
-        @keyframes ingot-float {
-            0% { transform: translate(-50%, -50%) translateY(0); opacity: 1; }
-            100% { transform: translate(-50%, -50%) translateY(-100px); opacity: 0; }
+        .explosion-gif {
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 801;
+            pointer-events: none;
         }
 
-        /* АДАПТИВ */
-        @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2.5rem; }
+        .gold-drop {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            image-rendering: pixelated;
+            z-index: 802;
+            pointer-events: none;
+        }
+
+        @keyframes spin-roll { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes bounce-loop { 
+            from { transform: translateY(0); } 
+            to { transform: translateY(-30px); } 
+        }
+        @keyframes gold-anim {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            50% { transform: translate(-50%, -150%) scale(1.5); opacity: 1; }
+            100% { transform: translate(-50%, -200%) scale(1); opacity: 0; }
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 80px 0 40px;
+            border-top: 1px solid var(--border);
+            margin-top: 100px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        .footer-brand h2 { font-size: 2rem; margin: 0 0 15px; }
+        .footer-links { display: flex; flex-direction: column; gap: 12px; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; transition: 0.2s; }
+        .footer-links a:hover { color: var(--accent); }
+
+        /* --- АДАПТИВНОСТЬ --- */
+        @media (max-width: 900px) {
             .image-grid { grid-template-columns: 1fr; }
-            .launcher-card { flex-direction: column; text-align: center; gap: 30px; }
-            .scoreboard { top: auto; bottom: 20px; right: 20px; }
+            .hero-card { padding: 60px 30px; border-radius: 30px; }
+            .launcher-card { flex-direction: column; text-align: center; gap: 40px; padding: 50px 30px; }
+            .nav-links { display: none; }
+            .scoreboard { top: auto; bottom: 30px; right: 20px; scale: 0.8; }
+            .hero-content h1 { font-size: 2.8rem; }
+            .showcase-item { height: 300px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="scoreboard" id="scoreboard">
-        <div class="score-value" id="score-count">0</div>
-        <img src="sr2327cb1dd7ff0.png" width="25" alt="Gold">
+    <!-- СЧЕТЧИК -->
+    <div class="scoreboard">
+        <div>
+            <div class="score-label">Собрано</div>
+            <div class="score-value" id="score-val">0</div>
+        </div>
+        <img src="https://minecraft.wiki/images/Gold_Ingot_JE4_BE2.png" width="30" alt="Gold">
     </div>
 
     <nav class="navbar">
         <div class="container nav-container">
-            <div class="logo">TEOTEO</div>
+            <a href="#" class="logo">
+                <img src="https://i.ibb.co/LzqXwXn/teoteo-logo.png" alt="Logo" onerror="this.style.display='none'">
+                TEO<span>TEO</span>
+            </a>
             <div class="nav-links">
                 <a href="#">Форум</a>
+                <a href="#">Вики</a>
                 <a href="#">Донат</a>
+                <a href="https://discord.gg/v2ZjPARPdQ" target="_blank">Discord</a>
             </div>
         </div>
     </nav>
 
-    <section class="hero-screen">
-        <div class="container">
-            <div class="hero-card">
-                <div class="hero-content">
-                    <h1>TEOTEO — <br><span class="highlight">Minecraft сумасшествие!</span></h1>
-                    <p class="description">Мир, где царит Дикий Запад, безумие и полная свобода действий. Начни свой путь прямо сейчас!</p>
-                    <a href="#showcase" class="btn-main">Исследовать мир ↓</a>
+    <main>
+        <section class="hero-screen">
+            <div class="container">
+                <div class="hero-card">
+                    <div class="hero-content">
+                        <h1>TEOTEO — <br><span class="highlight">Minecraft сумасшествие!</span></h1>
+                        <p class="description">
+                            Мир, где царит Дикий Запад, безумие и полная свобода действий. 
+                            Войди в этот мир через окно, если дверь закрыта!
+                        </p>
+                        <div class="hero-btns">
+                            <a href="#showcase" class="btn-main">Начать приключение ▶</a>
+                            <a href="#" class="btn-outline">Мини-гайд</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- СЕКЦИЯ С КАРТИНКАМИ (REVEAL ANIMATION) -->
-    <section class="showcase-section" id="showcase">
-        <div class="container">
-            <h2 class="reveal" style="font-size: 3rem; text-align: center; margin-bottom: 50px;">НАШ <span class="highlight">МИР</span></h2>
-            
-            <div class="image-grid">
-                <div class="showcase-item reveal-left">
-                    <img src="unnamed.jpg" alt="Minecraft World 1" onerror="this.src='https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?auto=format&fit=crop&q=80&w=800'">
-                </div>
-                <div class="showcase-item reveal-right">
-                    <img src="unnamed (1).jpg" alt="Minecraft World 2" onerror="this.src='https://images.unsplash.com/photo-1614850715649-1d0106293bd1?auto=format&fit=crop&q=80&w=800'">
+        <section class="showcase-section" id="showcase">
+            <div class="container">
+                <h2 class="reveal" style="font-size: clamp(2rem, 5vw, 3.5rem); text-align: center;">НАШ <span class="highlight">ДИКИЙ МИР</span></h2>
+                
+                <div class="image-grid">
+                    <div class="showcase-item reveal">
+                        <img src="unnamed.jpg" alt="World 1" onerror="this.src='https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800'">
+                    </div>
+                    <div class="showcase-item reveal">
+                        <img src="unnamed (1).jpg" alt="World 2" onerror="this.src='https://images.unsplash.com/photo-1589118949245-7d38baf380d6?q=80&w=800'">
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ВИДЕО СЕКЦИЯ -->
-    <section class="video-section">
-        <div class="container">
-            <h2 class="reveal" style="font-size: 2.5rem;">ТРЕЙЛЕР <span class="highlight">ПРИКЛЮЧЕНИЙ</span></h2>
-            <div class="video-container reveal">
-                <iframe src="https://www.youtube.com/embed/BWsO9j6QcGg" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <section class="video-section">
+            <div class="container">
+                <h2 class="reveal" style="text-align: center;">УЗНАЙ <span class="highlight">БОЛЬШЕ</span></h2>
+                <div class="video-wrapper reveal">
+                    <iframe src="https://www.youtube.com/embed/BWsO9j6QcGg" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="launcher-section">
-        <div class="container">
+        <section class="container">
             <div class="launcher-card reveal">
                 <div>
-                    <h2 style="font-size: 2.5rem; margin: 0 0 10px;">Наш лаунчер</h2>
-                    <p style="color: var(--text-muted);">Эксклюзивные моды и стабильная игра.</p>
+                    <h2>Наш <span class="highlight">Лаунчер</span></h2>
+                    <p class="description">Уникальная сборка, оптимизированная под слабые ПК.</p>
                 </div>
                 <a href="#" class="btn-main">Скачать клиент ⬇</a>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <div class="tumbleweed-container" id="tumbleweed">
-        <div class="tumbleweed-bounce">
-            <img src="1691660596_grizly-club-p-kartinki-perekati-pole-bez-fona-47.png" class="tumbleweed-img" id="tumbleweed-img">
-            <img src="explosion_generator.gif" class="explosion" id="explosion-gif">
-            <img src="sr2327cb1dd7ff0.png" class="gold-ingot" id="gold-ingot">
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <h2>TEOTEO</h2>
+                <p style="color: var(--text-muted);">© 2026. Все права защищены.<br>Доверимся тем, кто копирует нас.</p>
+            </div>
+            <div class="footer-links">
+                <h3 style="font-size: 0.8rem; letter-spacing: 2px; color: #444;">РЕСУРСЫ</h3>
+                <a href="#">Правила сервера</a>
+                <a href="#">Карта BlueMap</a>
+                <a href="#">Тех. поддержка</a>
+            </div>
         </div>
+    </footer>
+
+    <!-- ПЕРЕКАТИ-ПОЛЕ ОБЪЕКТ -->
+    <div id="tumbleweed">
+        <div class="tumbleweed-body">
+            <!-- Твоё фото перекати-поля -->
+            <img src="1691660596_grizly-club-p-kartinki-perekati-pole-bez-fona-47.png" class="tumbleweed-img" id="t-img" 
+                 onerror="this.src='https://cdn-icons-png.flaticon.com/512/3534/3534065.png'">
+        </div>
+        <!-- Гифка взрыва -->
+        <img src="explosion_generator.gif" class="explosion-gif" id="e-gif">
+        <!-- Золотой слиток -->
+        <img src="https://minecraft.wiki/images/Gold_Ingot_JE4_BE2.png" class="gold-drop" id="g-drop">
     </div>
 
     <script>
-        // --- ПРИНУДИТЕЛЬНЫЙ ВЕРХ ---
+        // 1. Принудительный скролл наверх
         if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
         window.scrollTo(0, 0);
 
-        // --- REVEAL ANIMATION (SCROLL SPY) ---
-        function reveal() {
-            const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-            for (let i = 0; i < reveals.length; i++) {
-                const windowHeight = window.innerHeight;
-                const elementTop = reveals[i].getBoundingClientRect().top;
-                const elementVisible = 150;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add('active');
+        // 2. Анимация появления (Reveal)
+        const reveal = () => {
+            const items = document.querySelectorAll('.reveal');
+            items.forEach(item => {
+                const rect = item.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    item.classList.add('active');
                 }
-            }
-        }
+            });
+        };
         window.addEventListener('scroll', reveal);
+        window.onload = () => {
+            reveal();
+            moveTumbleweed();
+        };
 
-        // --- TUMBLEWEED LOGIC ---
-        const tumbleweed = document.getElementById('tumbleweed');
-        const tumbleweedImg = document.getElementById('tumbleweed-img');
-        const explosionGif = document.getElementById('explosion-gif');
-        const goldIngot = document.getElementById('gold-ingot');
-        const scoreElement = document.getElementById('score-count');
-        let count = 0;
+        // 3. Логика ПЕРЕКАТИ-ПОЛЯ
+        const tw = document.getElementById('tumbleweed');
+        const twImg = document.getElementById('t-img');
+        const exGif = document.getElementById('e-gif');
+        const gold = document.getElementById('g-drop');
+        const scoreDisplay = document.getElementById('score-val');
 
-        function spawnTumbleweed() {
-            tumbleweedImg.style.opacity = '1';
+        let score = 0;
+        let isDead = false;
+
+        // Настройка движения: избегаем центра (где кнопки)
+        function getSafePosition() {
             const w = window.innerWidth;
             const h = window.innerHeight;
             
-            tumbleweed.style.transition = 'none';
-            tumbleweed.style.left = '-150px';
-            tumbleweed.style.top = (Math.random() * (h - 200) + 100) + 'px';
+            // Определяем "безопасные зоны" (верхняя треть или нижняя треть экрана)
+            const side = Math.random() > 0.5 ? 'left' : 'right';
+            const startX = side === 'left' ? -100 : w + 100;
+            const endX = side === 'left' ? w + 100 : -100;
             
-            setTimeout(() => {
-                tumbleweed.style.transition = 'left 8s linear';
-                tumbleweed.style.left = (w + 150) + 'px';
-            }, 100);
+            // Выбираем Y либо сверху (0-25%), либо снизу (75-90%)
+            const isTopZone = Math.random() > 0.5;
+            const startY = isTopZone ? (Math.random() * h * 0.25) : (h * 0.75 + Math.random() * h * 0.15);
+            const endY = startY + (Math.random() * 100 - 50); // Небольшой наклон траектории
 
-            setTimeout(spawnTumbleweed, 12000);
+            return { startX, startY, endX, endY };
         }
 
-        tumbleweed.onclick = () => {
-            if (tumbleweedImg.style.opacity === '0') return;
-            count++;
-            scoreElement.innerText = count;
+        function moveTumbleweed() {
+            if (isDead) return;
+
+            const pos = getSafePosition();
+            const duration = 7000 + Math.random() * 5000;
+
+            tw.style.transition = 'none';
+            tw.style.left = `${pos.startX}px`;
+            tw.style.top = `${pos.startY}px`;
+            tw.style.display = 'flex';
+            twImg.style.opacity = '1';
+
+            // Даем браузеру время применить начальные стили
+            setTimeout(() => {
+                tw.style.transition = `left ${duration}ms linear, top ${duration}ms linear`;
+                tw.style.left = `${pos.endX}px`;
+                tw.style.top = `${pos.endY}px`;
+            }, 50);
+
+            // Респаун через время
+            setTimeout(() => {
+                if (!isDead) moveTumbleweed();
+            }, duration + 500);
+        }
+
+        tw.addEventListener('click', () => {
+            if (isDead) return;
+            isDead = true;
+
+            // Звука нет в ТЗ, только визуальные эффекты
+            score++;
+            scoreDisplay.innerText = score;
+
+            // Скрываем перекати-поле, показываем взрыв
+            twImg.style.opacity = '0';
+            exGif.style.display = 'block';
             
-            tumbleweedImg.style.opacity = '0';
-            explosionGif.style.display = 'block';
-            goldIngot.style.display = 'block';
-            goldIngot.style.animation = 'ingot-float 1s forwards';
+            // Золотой слиток
+            gold.style.display = 'block';
+            gold.style.animation = 'gold-anim 1s forwards';
 
             setTimeout(() => {
-                explosionGif.style.display = 'none';
-                goldIngot.style.display = 'none';
-                goldIngot.style.animation = '';
+                exGif.style.display = 'none';
+                gold.style.display = 'none';
+                gold.style.animation = '';
+                tw.style.display = 'none';
+                isDead = false;
+                
+                // Переспаун в новом месте через небольшую паузу
+                setTimeout(moveTumbleweed, 2000);
             }, 1000);
-        };
-
-        window.onload = () => {
-            reveal(); // Проверка видимости при загрузке
-            spawnTumbleweed();
-        };
+        });
     </script>
 </body>
 </html>
