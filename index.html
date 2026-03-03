@@ -14,7 +14,9 @@
             background-color: #000000;
             color: #FFFFFF;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Базовая плавная прокрутка через CSS */
             scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
         /* Glassmorphism effect */
@@ -46,11 +48,19 @@
         .bg-theme-orange { background-color: #F97316; }
 
         .btn-hover-effect {
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .btn-hover-effect:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.4);
+        }
+
+        .btn-secondary-hover {
+            transition: all 0.3s ease;
+        }
+        .btn-secondary-hover:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
         }
 
         /* Full screen sections like Hero */
@@ -164,10 +174,10 @@
         </div>
         
         <nav class="hidden md:flex space-x-8 text-sm font-medium text-gray-300">
-            <a href="#" class="hover:text-white transition-colors">Главная</a>
-            <a href="#" class="hover:text-white transition-colors">Форум</a>
-            <a href="#download-section" class="hover:text-white transition-colors">Донат</a>
-            <a href="#" class="hover:text-white transition-colors">Правила</a>
+            <a href="#" class="nav-link hover:text-white transition-colors">Главная</a>
+            <a href="#" class="nav-link hover:text-white transition-colors">Форум</a>
+            <a href="#download-section" class="nav-link hover:text-white transition-colors">Донат</a>
+            <a href="#" class="nav-link hover:text-white transition-colors">Правила</a>
         </nav>
 
         <div class="flex items-center space-x-4">
@@ -202,11 +212,11 @@
                         Мир, где можно войти в дверь либо в окно! Дикий Запад.
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <a href="#features" class="bg-theme-orange text-white font-bold py-5 px-10 rounded-xl btn-hover-effect flex items-center space-x-3 text-lg">
+                        <a href="#features" class="smooth-scroll bg-theme-orange text-white font-bold py-5 px-10 rounded-xl btn-hover-effect flex items-center space-x-3 text-lg">
                             <span>ИССЛЕДОВАТЬ МИР</span>
                             <i class="fa-solid fa-arrow-down"></i>
                         </a>
-                        <a href="#download-section" class="bg-black/40 backdrop-blur-md border border-white/20 text-white font-bold py-5 px-10 rounded-xl btn-secondary-hover flex items-center space-x-3 text-lg">
+                        <a href="#download-section" class="smooth-scroll bg-black/40 backdrop-blur-md border border-white/20 text-white font-bold py-5 px-10 rounded-xl btn-secondary-hover flex items-center space-x-3 text-lg">
                             <i class="fa-solid fa-download"></i>
                             <span>СКАЧАТЬ ЛАУНЧЕР</span>
                         </a>
@@ -266,7 +276,7 @@
 
         </div>
 
-        <!-- DOWNLOAD SECTION (Теперь на весь экран как первый экран) -->
+        <!-- DOWNLOAD SECTION -->
         <section id="download-section" class="full-screen-section border-t border-gray-900 bg-black">
             <!-- Фон лаунчера -->
             <img src="launcher-bg.jpg" alt="[Фон лаунчера]" class="absolute inset-0 w-full h-full object-cover opacity-60" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=80'" />
@@ -318,7 +328,29 @@
     </div>
 
     <script>
-        // Scroll Reveal
+        // Smooth Scroll Logic for buttons and links
+        document.querySelectorAll('.smooth-scroll, .nav-link').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId.startsWith('#') && targetId.length > 1) {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        // Рассчитываем позицию с учетом высоты хедера
+                        const headerOffset = 80;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Scroll Reveal Animation on scroll
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
@@ -332,7 +364,7 @@
         window.addEventListener("scroll", reveal);
         reveal();
 
-        // Tumbleweed Logic
+        // Tumbleweed Game Logic
         const tumbleweed = document.getElementById('tumbleweed');
         const tumbleweedImg = document.getElementById('tumbleweed-img');
         const explosionGif = document.getElementById('explosion-gif');
