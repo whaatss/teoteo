@@ -26,6 +26,8 @@
             font-family: 'Inter', sans-serif;
             margin: 0;
             overflow-x: hidden;
+            /* Скрываем контент до загрузки, чтобы не было прыжка скролла (опционально) */
+            opacity: 1; 
         }
 
         .container {
@@ -145,7 +147,7 @@
             left: -200px;
             top: -200px;
             user-select: none;
-            -webkit-tap-highlight-color: transparent; /* Убирает синий квадрат при тапе на мобилках */
+            -webkit-tap-highlight-color: transparent;
         }
 
         .tumbleweed-bounce {
@@ -208,59 +210,32 @@
         }
 
         /* =========================================
-           АДАПТИВ ДЛЯ МОБИЛЬНЫХ (MEDIA QUERIES)
+           АДАПТИВ ДЛЯ МОБИЛЬНЫХ
         ========================================= */
         @media (max-width: 992px) {
             .hero-content h1 { font-size: 3.5rem; }
-            .grid-layout { grid-template-columns: 1fr; gap: 40px; } /* Блоки друг под другом */
+            .grid-layout { grid-template-columns: 1fr; gap: 40px; }
             .launcher-card { min-height: 250px; padding: 60px 40px; }
         }
 
         @media (max-width: 768px) {
             .container { padding: 0 20px; }
-            
-            /* Шапка */
             .navbar { padding: 15px 0; }
             .logo { font-size: 1.2rem; }
-            .logo img { width: 30px; }
             .nav-links a { margin-left: 20px; font-size: 0.9rem; }
-
-            /* Счетчик */
-            .scoreboard {
-                top: 80px; 
-                right: 20px;
-                padding: 10px 15px;
-                gap: 10px;
-                border-radius: 12px;
-            }
+            .scoreboard { top: 80px; right: 20px; padding: 10px 15px; }
             .score-value { font-size: 1.4rem; }
-            .scoreboard img { width: 20px; }
-            .scoreboard-title { font-size: 0.65rem; }
-
-            /* Главный экран */
             .hero-screen { padding-top: 130px; }
-            .hero-card { padding: 50px 30px; border-radius: 20px; }
+            .hero-card { padding: 50px 30px; }
             .hero-content h1 { font-size: 2.8rem; }
-            .description { font-size: 1rem; margin: 20px 0 30px 0; }
-            .btn-main { padding: 15px 30px; font-size: 1rem; width: 100%; box-sizing: border-box; text-align: center; }
-
-            /* Лаунчер блок */
-            .launcher-card { padding: 40px 30px; }
+            .description { font-size: 1rem; }
+            .btn-main { padding: 15px 30px; width: 100%; text-align: center; }
             .launcher-content h3 { font-size: 2rem; }
         }
 
         @media (max-width: 480px) {
-            /* Фиксы для совсем узких экранов (телефоны) */
             .hero-content h1 { font-size: 2.2rem; }
-            .hero-card { padding: 40px 20px; }
-            
-            .nav-links a { margin-left: 15px; font-size: 0.85rem; }
-            
-            .launcher-content h3 { font-size: 1.8rem; }
-            
-            /* Уменьшаем перекати-поле на телефоне, чтобы было легче попасть, но не закрывало экран */
             .tumbleweed-img { width: 65px; }
-            .explosion { width: 140px; }
         }
     </style>
 </head>
@@ -332,6 +307,12 @@
     </div>
 
     <script>
+        // --- ФИКС СКРОЛЛА ПРИ ЗАГРУЗКЕ ---
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+
         const tumbleweed = document.getElementById('tumbleweed');
         const tumbleweedImg = document.getElementById('tumbleweed-img');
         const explosionGif = document.getElementById('explosion-gif');
@@ -348,7 +329,6 @@
             const w = window.innerWidth;
             const h = window.innerHeight;
             const padding = 100;
-            
             const safeMargin = 0.25; 
 
             const isHorizontal = Math.random() > 0.4; 
@@ -358,14 +338,12 @@
                 const isTop = Math.random() > 0.5;
                 startY = isTop ? 50 + Math.random() * (h * safeMargin - 50) : h - 50 - (Math.random() * (h * safeMargin - 50));
                 endY = startY + (Math.random() * 100 - 50); 
-                
                 startX = Math.random() > 0.5 ? -padding : w + padding;
                 endX = startX < 0 ? w + padding : -padding;
             } else {
                 const isLeft = Math.random() > 0.5;
                 startX = isLeft ? 50 + Math.random() * (w * safeMargin - 50) : w - 50 - (Math.random() * (w * safeMargin - 50));
                 endX = startX + (Math.random() * 100 - 50);
-                
                 startY = Math.random() > 0.5 ? -padding : h + padding;
                 endY = startY < 0 ? h + padding : -padding;
             }
@@ -373,11 +351,9 @@
             tumbleweed.style.transition = 'none';
             tumbleweed.style.left = startX + 'px';
             tumbleweed.style.top = startY + 'px';
-
             tumbleweed.offsetHeight;
 
             const duration = 5000 + Math.random() * 3000; 
-            
             tumbleweed.style.transition = `left ${duration}ms linear, top ${duration}ms linear`;
             tumbleweed.style.left = endX + 'px';
             tumbleweed.style.top = endY + 'px';
@@ -390,10 +366,9 @@
             }, duration);
         }
 
-        // touchstart работает быстрее click на мобильных устройствах
         tumbleweed.addEventListener('click', handleHit);
         tumbleweed.addEventListener('touchstart', function(e) {
-            e.preventDefault(); // Запрещаем эмуляцию мыши после тапа
+            e.preventDefault();
             handleHit(e);
         }, {passive: false});
 
@@ -431,10 +406,15 @@
             }, 1500);
         }
 
-        window.onload = spawnTumbleweed;
+        window.onload = function() {
+            // Принудительно скроллим вверх еще раз после полной загрузки всех ресурсов
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 10);
+            spawnTumbleweed();
+        };
     </script>
 
 </body>
 </html>
-
 
