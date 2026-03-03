@@ -42,7 +42,6 @@
             background: rgba(20, 20, 25, 0.7);
         }
 
-        /* Убрано свечение текста (text-shadow) */
         .text-glow, .highlight, .text-theme-orange {
             text-shadow: none !important;
         }
@@ -59,19 +58,11 @@
             box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.4);
         }
 
-        /* Sparkle element */
-        .sparkle {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: radial-gradient(circle, #FFD700 0%, transparent 70%);
-            border-radius: 50%;
-            filter: blur(2px);
-            animation: pulse-sparkle 2s infinite alternate;
-        }
-        @keyframes pulse-sparkle {
-            0% { transform: scale(0.8); opacity: 0.5; }
-            100% { transform: scale(1.2); opacity: 1; }
+        /* Secondary button hover */
+        .btn-secondary-hover:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         /* Scroll Animation Classes */
@@ -85,12 +76,18 @@
             transform: translateY(0);
         }
 
-        /* Gold bar style */
+        /* Gold bar style / Scoreboard */
         .gold-counter {
             background: rgba(0, 0, 0, 0.8);
             border: 1px solid #F97316;
             border-radius: 12px;
             box-shadow: 0 0 15px rgba(249, 115, 22, 0.2);
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .gold-counter.bump {
+            transform: scale(1.15);
+            box-shadow: 0 0 25px rgba(249, 115, 22, 0.6);
+            border-color: #FFD700;
         }
 
         /* Video container responsive */
@@ -109,31 +106,81 @@
             height: 100%;
         }
 
-        /* АНИМАЦИЯ ПЕРЕКАТИ-ПОЛЯ */
-        @keyframes roll {
-            0% { transform: translateX(-100%) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateX(100vw) rotate(1080deg); opacity: 0; }
-        }
-        .tumbleweed {
+        /* =========================================
+           АНИМАЦИЯ ПЕРЕКАТИ-ПОЛЯ (TUMBLEWEED) - Восстановленная механика
+        ========================================= */
+        .tumbleweed-container {
             position: fixed;
-            bottom: 40px;
+            z-index: 100; /* Поверх всего */
+            pointer-events: auto;
+            cursor: pointer;
+            left: -200px;
+            top: -200px;
+        }
+
+        .tumbleweed-bounce {
+            animation: bounce-chaotic 8s ease-in-out infinite;
+            position: relative;
+        }
+
+        .tumbleweed-img {
             width: 80px;
-            height: 80px;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%238B7355" opacity="0.8"/><path d="M20 50 Q 50 10 80 50 T 20 50" fill="none" stroke="%235C4033" stroke-width="2"/><path d="M30 30 Q 50 70 70 30" fill="none" stroke="%235C4033" stroke-width="2"/><path d="M10 50 Q 50 90 90 50" fill="none" stroke="%235C4033" stroke-width="1.5"/></svg>');
-            background-size: contain;
-            background-repeat: no-repeat;
+            height: auto;
+            opacity: 0.85;
+            animation: spin-roll 3s linear infinite;
+            filter: drop-shadow(0px 10px 10px rgba(0,0,0,0.5));
+            transition: opacity 0.15s ease;
+        }
+
+        /* Эффект взрыва */
+        .explosion {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            height: auto;
             pointer-events: none;
-            z-index: 99;
-            animation: roll 18s linear infinite;
+            display: none;
+            z-index: 12;
+        }
+
+        /* Золотой слиток */
+        .gold-ingot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            pointer-events: none;
+            display: none;
+            z-index: 13;
+            image-rendering: pixelated;
+        }
+
+        @keyframes ingot-float {
+            0% { transform: translate(-50%, -50%) translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translate(-50%, -50%) translateY(-120px) rotate(30deg); opacity: 0; }
+        }
+
+        @keyframes bounce-chaotic {
+            0%, 100% { transform: translateY(0px) scaleY(0.95); }
+            10% { transform: translateY(-150px) scaleY(1.05); }
+            25% { transform: translateY(0px) scaleY(0.95); }
+            40% { transform: translateY(-80px) scaleY(1); }
+            55% { transform: translateY(0px) scaleY(0.95); }
+            65% { transform: translateY(-30px) scaleY(1); }
+            75% { transform: translateY(0px) scaleY(0.95); }
+            85% { transform: translateY(-180px) scaleY(1.05); }
+        }
+
+        @keyframes spin-roll {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-360deg); }
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col relative overflow-x-hidden">
-
-    <!-- Перекати-поле -->
-    <div class="tumbleweed"></div>
 
     <!-- Header Navigation -->
     <header class="glass-panel sticky top-0 z-50 px-6 py-4 flex justify-between items-center border-b border-gray-900">
@@ -149,11 +196,14 @@
         </nav>
 
         <div class="flex items-center space-x-4">
-            <div class="gold-counter px-4 py-2 flex flex-col items-center">
+            <!-- СЧЕТЧИК -->
+            <div id="scoreboard" class="gold-counter px-4 py-2 flex flex-col items-center">
                 <span class="text-[10px] text-gray-400 uppercase tracking-wider mb-1">Разбито</span>
                 <div class="flex items-center space-x-2">
-                    <span class="text-xl font-bold text-theme-orange">0</span>
-                    <svg width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <span id="score-count" class="text-xl font-bold text-theme-orange">0</span>
+                    <img src="sr2327cb1dd7ff0.png" width="20" alt="Золотой слиток" style="image-rendering: pixelated;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <!-- Резервная SVG иконка, если картинка не загрузится -->
+                    <svg style="display:none;" width="20" height="14" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M4 2L2 6V14L4 12H20L22 14V6L20 2H4Z" fill="#FFD700"/>
                         <path d="M4 2L2 6H22L20 2H4Z" fill="#FFE866"/>
                         <path d="M22 6V14L20 12V6H22Z" fill="#B39700"/>
@@ -169,34 +219,36 @@
     <!-- Main Content Area -->
     <main class="flex-grow flex flex-col items-center w-full">
 
-        <!-- Hero Section (ТЕПЕРЬ НА ВЕСЬ ЭКРАН) -->
-        <section class="w-full relative bg-black flex items-center min-h-[calc(100vh-80px)] border-b border-gray-900 overflow-hidden group">
-            <!-- Фоновая картинка -->
-            <img src="background.jpg" alt="[Фоновое изображение]" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-105 transition-transform duration-[15s] ease-linear" onerror="this.src='https://images.unsplash.com/photo-1605379399642-870262d3d051?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'" />
+        <!-- Hero Section -->
+        <section class="w-full relative flex items-center min-h-[calc(100vh-80px)] border-b border-gray-900 overflow-hidden group">
+            <!-- Фоновая картинка (Увеличена яркость, opacity-80) -->
+            <img src="background.jpg" alt="[Фоновое изображение]" class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-[15s] ease-linear" onerror="this.src='https://images.unsplash.com/photo-1605379399642-870262d3d051?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'" />
             
-            <!-- Градиент для читаемости -->
-            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent flex flex-col justify-center">
+            <!-- Мягкий градиент вместо жесткого черного (фон стал намного светлее) -->
+            <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent flex flex-col justify-center">
                 <div class="container mx-auto px-6 lg:px-12 w-full relative z-10">
-                    <div class="w-full md:w-2/3 lg:w-1/2 py-8">
-                        <div class="sparkle top-10 right-20 hidden md:block"></div>
-                        <div class="mb-4 inline-flex items-center">
-                            <span class="bg-gray-800 text-xs text-gray-300 px-3 py-1 rounded-full border border-gray-700 uppercase tracking-wider">РП Проект</span>
-                        </div>
-
-                        <h1 class="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-6">
+                    <div class="w-full md:w-2/3 lg:w-3/4 py-8">
+                        
+                        <!-- Заголовок -->
+                        <h1 class="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-6" style="text-shadow: 0 4px 10px rgba(0,0,0,0.5);">
                             TEOTEO - <br>
                             <span class="text-theme-orange">Minecraft<br>сумасшествие.</span>
                         </h1>
 
-                        <p class="text-gray-300 text-lg md:text-xl mb-10 max-w-lg leading-relaxed">
+                        <p class="text-gray-200 text-lg md:text-xl mb-10 max-w-2xl leading-relaxed font-medium" style="text-shadow: 0 2px 4px rgba(0,0,0,0.8);">
                             Погрузись в атмосферу безумия, где каждый выстрел имеет значение, а свобода - единственное правило. Готов начать?
                         </p>
 
+                        <!-- Кнопки -->
                         <div class="flex flex-wrap items-center gap-4">
-                            <!-- Кнопка теперь скроллит к первой плашке с контентом -->
-                            <a href="#features" class="bg-theme-orange text-white font-bold py-4 px-10 rounded-lg btn-hover-effect flex items-center space-x-3 text-lg">
+                            <a href="#features" class="bg-theme-orange text-white font-bold py-4 px-8 rounded-lg btn-hover-effect flex items-center space-x-3 text-lg">
                                 <span>ИССЛЕДОВАТЬ МИР</span>
                                 <i class="fa-solid fa-arrow-down text-base"></i>
+                            </a>
+                            <!-- НОВАЯ КНОПКА: Скачать лаунчер -->
+                            <a href="#download-section" class="bg-black/40 backdrop-blur-md border border-white/20 text-white font-bold py-4 px-8 rounded-lg btn-secondary-hover flex items-center space-x-3 text-lg transition-all duration-300">
+                                <i class="fa-solid fa-download text-base"></i>
+                                <span>СКАЧАТЬ ЛАУНЧЕР</span>
                             </a>
                         </div>
                     </div>
@@ -204,10 +256,10 @@
             </div>
         </section>
 
-        <!-- Container for cards -->
+        <!-- Container for features and video -->
         <div id="features" class="container mx-auto px-4 py-24 flex flex-col items-center w-full">
 
-            <!-- Visual Section 1: Image Left (Стиль Minefite) -->
+            <!-- Visual Section 1 -->
             <section class="reveal w-full max-w-6xl minefite-card p-8 md:p-12 mb-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div class="order-2 md:order-1">
                     <div class="relative group overflow-hidden rounded-2xl border border-gray-800">
@@ -238,7 +290,7 @@
                 </div>
             </section>
 
-            <!-- Visual Section 2: Image Right (Стиль Minefite) -->
+            <!-- Visual Section 2 -->
             <section class="reveal w-full max-w-6xl minefite-card p-8 md:p-12 mb-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div class="space-y-6">
                     <h2 class="text-4xl font-black">Твоя <span class="text-theme-orange">история</span></h2>
@@ -262,31 +314,23 @@
                 </div>
             </section>
 
-            <!-- Download Section (Фон растянут на весь блок) -->
+            <!-- Download Section (Измененная) -->
             <section id="download-section" class="reveal w-full max-w-6xl mb-10 relative overflow-hidden minefite-card !p-0 group border border-theme-orange/20 hover:border-theme-orange/50">
                 
-                <!-- Задний фон на всю плашку -->
                 <div class="absolute inset-0 z-0">
                     <div class="absolute inset-0 bg-[url('launcher-bg.jpg')] bg-cover bg-center opacity-30 group-hover:opacity-40 transition-all duration-700 group-hover:scale-105"></div>
-                    <!-- Градиент, чтобы левая часть с текстом была темнее и отлично читалась -->
-                    <div class="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-black/30"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
                 </div>
                 
-                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 p-10 md:p-16">
-                    <div class="text-left w-full md:w-2/3">
+                <!-- Контент плашки скачивания (без кнопки Play) -->
+                <div class="relative z-10 flex flex-col items-start justify-center p-10 md:p-16 h-full min-h-[350px]">
+                    <div class="text-left max-w-2xl">
                         <h2 class="text-4xl md:text-5xl font-black mb-4 text-white">Наш собственный <br><span class="text-theme-orange">Лаунчер</span></h2>
-                        <p class="text-gray-300 mb-8 max-w-xl text-lg">Скачайте наш оптимизированный лаунчер для быстрой установки всех необходимых модов и мгновенного входа на сервер. Никаких сложных настроек.</p>
-                        <button class="bg-theme-orange text-white font-bold py-4 px-8 rounded-lg btn-hover-effect flex items-center justify-center space-x-3 w-full md:w-auto shadow-[0_0_20px_rgba(249,115,22,0.3)]">
+                        <p class="text-gray-300 mb-8 text-lg">Скачайте наш оптимизированный лаунчер для быстрой установки всех необходимых модов и мгновенного входа на сервер. Никаких сложных настроек.</p>
+                        <button class="bg-theme-orange text-white font-bold py-4 px-10 rounded-lg btn-hover-effect flex items-center justify-center space-x-3 w-full md:w-auto shadow-[0_0_20px_rgba(249,115,22,0.3)]">
                             <i class="fa-solid fa-download text-xl"></i>
                             <span>СКАЧАТЬ ДЛЯ WINDOWS</span>
                         </button>
-                    </div>
-                    
-                    <!-- Декоративный элемент с кнопкой Play -->
-                    <div class="hidden md:flex w-1/3 justify-center items-center">
-                         <div class="w-24 h-24 rounded-full border-2 border-theme-orange/40 flex items-center justify-center bg-black/40 backdrop-blur-md group-hover:border-theme-orange group-hover:shadow-[0_0_30px_rgba(249,115,22,0.3)] transition-all duration-500 cursor-pointer">
-                             <i class="fa-solid fa-play text-4xl text-theme-orange pl-2"></i>
-                         </div>
                     </div>
                 </div>
             </section>
@@ -308,9 +352,18 @@
         </div>
     </footer>
 
+    <!-- ВОССТАНОВЛЕННОЕ ПЕРЕКАТИ-ПОЛЕ ИЗ ВАШЕГО КОДА -->
+    <div class="tumbleweed-container" id="tumbleweed">
+        <div class="tumbleweed-bounce">
+            <img src="1691660596_grizly-club-p-kartinki-perekati-pole-bez-fona-47.png" alt="Перекати-поле" class="tumbleweed-img" id="tumbleweed-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%238B7355\' opacity=\'0.8\'/><path d=\'M20 50 Q 50 10 80 50 T 20 50\' fill=\'none\' stroke=\'%235C4033\' stroke-width=\'2\'/><path d=\'M30 30 Q 50 70 70 30\' fill=\'none\' stroke=\'%235C4033\' stroke-width=\'2\'/></svg>'">
+            <img src="explosion_generator.gif" alt="Взрыв" class="explosion" id="explosion-gif">
+            <img src="sr2327cb1dd7ff0.png" alt="Золотой слиток" class="gold-ingot" id="gold-ingot" onerror="this.style.display='none'">
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script>
-        // Smooth scrolling
+        // Smooth scrolling for navigation
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -336,6 +389,107 @@
         }
         window.addEventListener("scroll", reveal);
         reveal(); // Trigger on load
+
+        // ==========================================
+        // JS ДЛЯ ПЕРЕКАТИ ПОЛЯ ИЗ ВАШЕГО КОДА
+        // ==========================================
+        const tumbleweed = document.getElementById('tumbleweed');
+        const tumbleweedImg = document.getElementById('tumbleweed-img');
+        const explosionGif = document.getElementById('explosion-gif');
+        const goldIngot = document.getElementById('gold-ingot');
+        const scoreElement = document.getElementById('score-count');
+        const scoreboard = document.getElementById('scoreboard');
+
+        let count = 0;
+        let activeAnimation = null;
+
+        function spawnTumbleweed() {
+            tumbleweedImg.style.opacity = '0.85';
+            
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            const padding = 150; 
+            const safeMargin = 0.15; // 15% высоты/ширины экрана по краям
+
+            // Решаем: будет ли движение горизонтальным (по верху/низу) или вертикальным (по бокам)
+            const isHorizontal = Math.random() > 0.4; 
+            let startX, startY, endX, endY;
+
+            if (isHorizontal) {
+                // Движение только по верхней или нижней кромке (избегаем центра по Y)
+                const isTop = Math.random() > 0.5;
+                startY = isTop ? Math.random() * (h * safeMargin) : h - (Math.random() * (h * safeMargin));
+                endY = startY + (Math.random() * 40 - 20); // Небольшой наклон, но в той же зоне
+                
+                startX = Math.random() > 0.5 ? -padding : w + padding;
+                endX = startX < 0 ? w + padding : -padding;
+            } else {
+                // Движение только по левой или правой кромке (избегаем центра по X)
+                const isLeft = Math.random() > 0.5;
+                startX = isLeft ? Math.random() * (w * safeMargin) : w - (Math.random() * (w * safeMargin));
+                endX = startX + (Math.random() * 40 - 20);
+                
+                startY = Math.random() > 0.5 ? -padding : h + padding;
+                endY = startY < 0 ? h + padding : -padding;
+            }
+
+            // Установка позиции
+            tumbleweed.style.transition = 'none';
+            tumbleweed.style.left = startX + 'px';
+            tumbleweed.style.top = startY + 'px';
+
+            tumbleweed.offsetHeight; // trigger reflow
+
+            // Длительность полета
+            const duration = 4000 + Math.random() * 4000;
+            
+            tumbleweed.style.transition = `left ${duration}ms linear, top ${duration}ms linear`;
+            tumbleweed.style.left = endX + 'px';
+            tumbleweed.style.top = endY + 'px';
+
+            if (activeAnimation) clearTimeout(activeAnimation);
+            activeAnimation = setTimeout(() => {
+                if (tumbleweedImg.style.opacity !== '0') {
+                    spawnTumbleweed();
+                }
+            }, duration);
+        }
+
+        tumbleweed.addEventListener('click', function() {
+            if (tumbleweedImg.style.opacity === '0') return;
+
+            count++;
+            scoreElement.innerText = count;
+            scoreboard.classList.add('bump');
+            setTimeout(() => scoreboard.classList.remove('bump'), 200);
+
+            tumbleweedImg.style.opacity = '0';
+            const rect = tumbleweed.getBoundingClientRect();
+            tumbleweed.style.transition = 'none';
+            tumbleweed.style.left = rect.left + 'px';
+            tumbleweed.style.top = rect.top + 'px';
+            
+            // Перезапуск GIF взрыва
+            const currentExplosionSrc = explosionGif.src;
+            explosionGif.src = '';
+            explosionGif.src = currentExplosionSrc;
+            explosionGif.style.display = 'block';
+            
+            goldIngot.style.display = 'block';
+            goldIngot.style.animation = 'ingot-float 1.5s forwards ease-out';
+
+            setTimeout(() => {
+                explosionGif.style.display = 'none';
+            }, 1000);
+
+            setTimeout(() => {
+                goldIngot.style.display = 'none';
+                goldIngot.style.animation = '';
+                spawnTumbleweed();
+            }, 1500);
+        });
+
+        window.onload = spawnTumbleweed;
     </script>
 </body>
 </html>
