@@ -11,22 +11,40 @@
     <style>
         /* Custom Styles and Animations */
         body {
-            background-color: #0F1015;
+            background-color: #000000;
             color: #FFFFFF;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             scroll-behavior: smooth;
         }
 
-        /* Glassmorphism effect */
+        /* Glassmorphism effect для шапки и футера */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .text-glow {
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        /* Эффекты карточек в стиле Minefite */
+        .minefite-card {
+            background: rgba(20, 20, 25, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1.5rem;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .minefite-card:hover {
+            border-color: rgba(249, 115, 22, 0.3);
+            box-shadow: 0 10px 40px -10px rgba(249, 115, 22, 0.15);
+            transform: translateY(-4px);
+            background: rgba(20, 20, 25, 0.7);
+        }
+
+        /* Убрано свечение текста (text-shadow) */
+        .text-glow, .highlight, .text-theme-orange {
+            text-shadow: none !important;
         }
 
         .text-theme-orange { color: #F97316; }
@@ -39,39 +57,6 @@
         .btn-hover-effect:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.4);
-        }
-
-        .bg-pattern {
-            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-
-        /* Hero Image Container Styling */
-        .hero-container {
-            border-radius: 1.5rem;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-        
-        .hero-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            z-index: 0;
-            opacity: 0.6;
-            transition: transform 10s linear;
-        }
-        
-        .hero-container:hover .hero-image {
-            transform: scale(1.05);
-        }
-
-        .hero-content-overlay {
-            position: relative;
-            z-index: 10;
-            background: linear-gradient(to right, rgba(15, 16, 21, 0.9) 0%, rgba(15, 16, 21, 0.4) 50%, transparent 100%);
         }
 
         /* Sparkle element */
@@ -102,7 +87,7 @@
 
         /* Gold bar style */
         .gold-counter {
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.8);
             border: 1px solid #F97316;
             border-radius: 12px;
             box-shadow: 0 0 15px rgba(249, 115, 22, 0.2);
@@ -114,7 +99,7 @@
             padding-bottom: 56.25%; /* 16:9 */
             height: 0;
             overflow: hidden;
-            border-radius: 1rem;
+            background: #000;
         }
         .video-container iframe {
             position: absolute;
@@ -124,7 +109,7 @@
             height: 100%;
         }
 
-        /* ТУТ ВОЗВРАЩЕНА АНИМАЦИЯ ПЕРЕКАТИ-ПОЛЯ */
+        /* АНИМАЦИЯ ПЕРЕКАТИ-ПОЛЯ */
         @keyframes roll {
             0% { transform: translateX(-100%) rotate(0deg); opacity: 0; }
             10% { opacity: 1; }
@@ -143,16 +128,15 @@
             z-index: 99;
             animation: roll 18s linear infinite;
         }
-
     </style>
 </head>
-<body class="bg-pattern min-h-screen flex flex-col relative overflow-x-hidden">
+<body class="min-h-screen flex flex-col relative overflow-x-hidden">
 
     <!-- Перекати-поле -->
     <div class="tumbleweed"></div>
 
     <!-- Header Navigation -->
-    <header class="glass-panel sticky top-0 z-50 px-6 py-4 flex justify-between items-center border-b border-gray-800">
+    <header class="glass-panel sticky top-0 z-50 px-6 py-4 flex justify-between items-center border-b border-gray-900">
         <div class="flex items-center space-x-2">
             <span class="text-2xl font-black tracking-wider text-white">TEO<span class="text-theme-orange">TEO</span></span>
         </div>
@@ -160,7 +144,7 @@
         <nav class="hidden md:flex space-x-8 text-sm font-medium text-gray-300">
             <a href="#" class="hover:text-white transition-colors">Главная</a>
             <a href="#" class="hover:text-white transition-colors">Форум</a>
-            <a href="#" class="hover:text-white transition-colors">Донат</a>
+            <a href="#download-section" class="hover:text-white transition-colors">Донат</a>
             <a href="#" class="hover:text-white transition-colors">Правила</a>
         </nav>
 
@@ -183,119 +167,135 @@
     </header>
 
     <!-- Main Content Area -->
-    <main class="flex-grow container mx-auto px-4 py-8 md:py-16 flex flex-col items-center">
+    <main class="flex-grow flex flex-col items-center w-full">
 
-        <!-- Hero Section -->
-        <section class="w-full max-w-6xl hero-container bg-gray-900 border border-gray-800 min-h-[400px] md:min-h-[500px] flex mb-20">
-            <!-- Восстановлен фон background.jpg -->
-            <img src="background.jpg" alt="[Фоновое изображение]" class="hero-image" onerror="this.src='https://images.unsplash.com/photo-1605379399642-870262d3d051?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'" />
+        <!-- Hero Section (ТЕПЕРЬ НА ВЕСЬ ЭКРАН) -->
+        <section class="w-full relative bg-black flex items-center min-h-[calc(100vh-80px)] border-b border-gray-900 overflow-hidden group">
+            <!-- Фоновая картинка -->
+            <img src="background.jpg" alt="[Фоновое изображение]" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-105 transition-transform duration-[15s] ease-linear" onerror="this.src='https://images.unsplash.com/photo-1605379399642-870262d3d051?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'" />
             
-            <div class="hero-content-overlay w-full md:w-2/3 lg:w-1/2 p-8 md:p-12 flex flex-col justify-center relative">
-                <div class="sparkle top-10 right-10"></div>
-                <div class="mb-4 inline-flex items-center">
-                    <span class="bg-gray-800 text-xs text-gray-300 px-3 py-1 rounded-full border border-gray-700 uppercase tracking-wider">РП Проект</span>
-                </div>
+            <!-- Градиент для читаемости -->
+            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent flex flex-col justify-center">
+                <div class="container mx-auto px-6 lg:px-12 w-full relative z-10">
+                    <div class="w-full md:w-2/3 lg:w-1/2 py-8">
+                        <div class="sparkle top-10 right-20 hidden md:block"></div>
+                        <div class="mb-4 inline-flex items-center">
+                            <span class="bg-gray-800 text-xs text-gray-300 px-3 py-1 rounded-full border border-gray-700 uppercase tracking-wider">РП Проект</span>
+                        </div>
 
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-4 text-glow">
-                    TEOTEO - <br>
-                    <span class="text-theme-orange">Minecraft<br>сумасшествие.</span>
-                </h1>
+                        <h1 class="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-6">
+                            TEOTEO - <br>
+                            <span class="text-theme-orange">Minecraft<br>сумасшествие.</span>
+                        </h1>
 
-                <p class="text-gray-300 text-lg md:text-xl mb-8 max-w-lg leading-relaxed">
-                    Погрузись в атмосферу безумия, где каждый выстрел имеет значение, а свобода - единственное правило. Готов начать?
-                </p>
+                        <p class="text-gray-300 text-lg md:text-xl mb-10 max-w-lg leading-relaxed">
+                            Погрузись в атмосферу безумия, где каждый выстрел имеет значение, а свобода - единственное правило. Готов начать?
+                        </p>
 
-                <div class="flex flex-wrap items-center gap-4">
-                    <a href="#download-section" class="bg-theme-orange text-white font-bold py-3 px-8 rounded-lg btn-hover-effect flex items-center space-x-2">
-                        <span>ИССЛЕДОВАТЬ МИР</span>
-                        <i class="fa-solid fa-arrow-down text-sm"></i>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- New Visual Section 1: Image Left -->
-        <section class="reveal w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-24">
-            <div class="order-2 md:order-1">
-                <div class="relative group">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-orange-600 to-yellow-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-                    <!-- Фото unnamed.jpg -->
-                    <img src="unnamed.jpg" alt="[Пейзаж]" class="relative rounded-2xl border border-gray-800 shadow-2xl w-full object-cover h-[350px]">
-                </div>
-            </div>
-            <div class="order-1 md:order-2 space-y-6">
-                <h2 class="text-4xl font-black">Невероятные <span class="text-theme-orange">пейзажи</span></h2>
-                <p class="text-gray-400 text-lg leading-relaxed">Откройте для себя мир, проработанный до мельчайших деталей. Мы создали уникальные локации, которые заставят вас забыть о реальности.</p>
-                <div class="flex items-center space-x-4 text-theme-orange font-bold">
-                    <div class="h-[2px] w-12 bg-theme-orange"></div>
-                    <span>АТМОСФЕРА ДИКОГО ЗАПАДА</span>
+                        <div class="flex flex-wrap items-center gap-4">
+                            <!-- Кнопка теперь скроллит к первой плашке с контентом -->
+                            <a href="#features" class="bg-theme-orange text-white font-bold py-4 px-10 rounded-lg btn-hover-effect flex items-center space-x-3 text-lg">
+                                <span>ИССЛЕДОВАТЬ МИР</span>
+                                <i class="fa-solid fa-arrow-down text-base"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Video Section -->
-        <section class="reveal w-full max-w-6xl mb-24">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl md:text-5xl font-black mb-4 uppercase">Посмотри на это в <span class="text-theme-orange">действии</span></h2>
-                <p class="text-gray-400">Трейлер нашего безумного мира</p>
-            </div>
-            <div class="video-container shadow-2xl border-4 border-gray-800">
-                <iframe src="https://www.youtube.com/embed/BWsO9j6QcGg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-            </div>
-        </section>
+        <!-- Container for cards -->
+        <div id="features" class="container mx-auto px-4 py-24 flex flex-col items-center w-full">
 
-        <!-- New Visual Section 2: Image Right -->
-        <section class="reveal w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-24">
-            <div class="space-y-6">
-                <h2 class="text-4xl font-black">Твоя <span class="text-theme-orange">история</span></h2>
-                <p class="text-gray-400 text-lg leading-relaxed">Здесь нет ограничений. Будь шерифом, бандитом или мирным фермером. Каждое твоё действие меняет расклад сил на сервере.</p>
-                <ul class="space-y-3">
-                    <li class="flex items-center space-x-3 text-gray-300">
-                        <i class="fa-solid fa-check text-theme-orange"></i>
-                        <span>Уникальная экономика</span>
-                    </li>
-                    <li class="flex items-center space-x-3 text-gray-300">
-                        <i class="fa-solid fa-check text-theme-orange"></i>
-                        <span>Кастомное оружие</span>
-                    </li>
-                </ul>
-            </div>
-            <div>
-                <div class="relative group">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-yellow-600 to-orange-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-                    <!-- Фото unnamed (1).jpg -->
-                    <img src="unnamed (1).jpg" alt="[Персонаж]" class="relative rounded-2xl border border-gray-800 shadow-2xl w-full object-cover h-[350px]">
+            <!-- Visual Section 1: Image Left (Стиль Minefite) -->
+            <section class="reveal w-full max-w-6xl minefite-card p-8 md:p-12 mb-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="order-2 md:order-1">
+                    <div class="relative group overflow-hidden rounded-2xl border border-gray-800">
+                        <div class="absolute inset-0 bg-theme-orange opacity-0 group-hover:opacity-10 transition-opacity duration-500 z-10"></div>
+                        <img src="unnamed.jpg" alt="[Пейзаж]" class="relative w-full object-cover h-[350px] transform group-hover:scale-110 transition-transform duration-700">
+                    </div>
                 </div>
-            </div>
-        </section>
+                <div class="order-1 md:order-2 space-y-6">
+                    <h2 class="text-4xl font-black">Невероятные <span class="text-theme-orange">пейзажи</span></h2>
+                    <p class="text-gray-400 text-lg leading-relaxed">Откройте для себя мир, проработанный до мельчайших деталей. Мы создали уникальные локации, которые заставят вас забыть о реальности.</p>
+                    <div class="flex items-center space-x-4 text-theme-orange font-bold">
+                        <div class="h-[2px] w-12 bg-theme-orange"></div>
+                        <span>АТМОСФЕРА ДИКОГО ЗАПАДА</span>
+                    </div>
+                </div>
+            </section>
 
-        <!-- Download Section -->
-        <section id="download-section" class="reveal w-full max-w-4xl mt-16 mb-24 glass-panel rounded-2xl p-8 md:p-12 relative overflow-hidden border border-theme-orange/30">
-            <div class="absolute inset-0 bg-theme-orange opacity-5 blur-3xl rounded-full"></div>
-            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-                <div class="text-left">
-                    <h2 class="text-3xl font-black mb-4">Наш собственный <br><span class="text-theme-orange">Лаунчер</span></h2>
-                    <p class="text-gray-300 mb-6 max-w-md">Скачайте наш оптимизированный лаунчер для быстрой установки всех необходимых модов и мгновенного входа на сервер.</p>
-                    <button class="bg-white text-black font-bold py-4 px-8 rounded-lg hover:bg-gray-200 transition-colors flex items-center space-x-3 w-full md:w-auto justify-center shadow-lg">
-                        <i class="fa-solid fa-download"></i>
-                        <span>СКАЧАТЬ ДЛЯ WINDOWS</span>
-                    </button>
+            <!-- Video Section -->
+            <section class="reveal w-full max-w-6xl mb-24">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl md:text-5xl font-black mb-4 uppercase">Посмотри на это в <span class="text-theme-orange">действии</span></h2>
+                    <p class="text-gray-400">Трейлер нашего безумного мира</p>
                 </div>
-                <!-- Восстановлен фон launcher-bg.jpg -->
-                <div class="w-full md:w-64 h-64 bg-gray-900 rounded-xl border border-gray-700 shadow-2xl relative overflow-hidden flex items-center justify-center">
-                     <div class="absolute inset-0 opacity-20 bg-[url('launcher-bg.jpg')] bg-cover bg-center"></div>
-                     <div class="text-center z-10">
-                         <i class="fa-solid fa-play text-4xl text-theme-orange mb-4 cursor-pointer"></i>
-                         <p class="font-bold">TEOTEO</p>
-                     </div>
+                <div class="minefite-card p-4 md:p-6">
+                    <div class="video-container rounded-xl overflow-hidden border border-gray-800">
+                        <iframe src="https://www.youtube.com/embed/BWsO9j6QcGg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
+            <!-- Visual Section 2: Image Right (Стиль Minefite) -->
+            <section class="reveal w-full max-w-6xl minefite-card p-8 md:p-12 mb-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <h2 class="text-4xl font-black">Твоя <span class="text-theme-orange">история</span></h2>
+                    <p class="text-gray-400 text-lg leading-relaxed">Здесь нет ограничений. Будь шерифом, бандитом или мирным фермером. Каждое твоё действие меняет расклад сил на сервере.</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-center space-x-3 text-gray-300">
+                            <i class="fa-solid fa-check text-theme-orange"></i>
+                            <span>Уникальная экономика</span>
+                        </li>
+                        <li class="flex items-center space-x-3 text-gray-300">
+                            <i class="fa-solid fa-check text-theme-orange"></i>
+                            <span>Кастомное оружие</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="relative group overflow-hidden rounded-2xl border border-gray-800">
+                        <div class="absolute inset-0 bg-theme-orange opacity-0 group-hover:opacity-10 transition-opacity duration-500 z-10"></div>
+                        <img src="unnamed (1).jpg" alt="[Персонаж]" class="relative w-full object-cover h-[350px] transform group-hover:scale-110 transition-transform duration-700">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Download Section (Фон растянут на весь блок) -->
+            <section id="download-section" class="reveal w-full max-w-6xl mb-10 relative overflow-hidden minefite-card !p-0 group border border-theme-orange/20 hover:border-theme-orange/50">
+                
+                <!-- Задний фон на всю плашку -->
+                <div class="absolute inset-0 z-0">
+                    <div class="absolute inset-0 bg-[url('launcher-bg.jpg')] bg-cover bg-center opacity-30 group-hover:opacity-40 transition-all duration-700 group-hover:scale-105"></div>
+                    <!-- Градиент, чтобы левая часть с текстом была темнее и отлично читалась -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-black/30"></div>
+                </div>
+                
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 p-10 md:p-16">
+                    <div class="text-left w-full md:w-2/3">
+                        <h2 class="text-4xl md:text-5xl font-black mb-4 text-white">Наш собственный <br><span class="text-theme-orange">Лаунчер</span></h2>
+                        <p class="text-gray-300 mb-8 max-w-xl text-lg">Скачайте наш оптимизированный лаунчер для быстрой установки всех необходимых модов и мгновенного входа на сервер. Никаких сложных настроек.</p>
+                        <button class="bg-theme-orange text-white font-bold py-4 px-8 rounded-lg btn-hover-effect flex items-center justify-center space-x-3 w-full md:w-auto shadow-[0_0_20px_rgba(249,115,22,0.3)]">
+                            <i class="fa-solid fa-download text-xl"></i>
+                            <span>СКАЧАТЬ ДЛЯ WINDOWS</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Декоративный элемент с кнопкой Play -->
+                    <div class="hidden md:flex w-1/3 justify-center items-center">
+                         <div class="w-24 h-24 rounded-full border-2 border-theme-orange/40 flex items-center justify-center bg-black/40 backdrop-blur-md group-hover:border-theme-orange group-hover:shadow-[0_0_30px_rgba(249,115,22,0.3)] transition-all duration-500 cursor-pointer">
+                             <i class="fa-solid fa-play text-4xl text-theme-orange pl-2"></i>
+                         </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
     </main>
 
     <!-- Footer -->
-    <footer class="glass-panel border-t border-gray-800 py-8 mt-auto">
+    <footer class="glass-panel border-t border-gray-900 py-8 mt-auto relative z-10">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
             <div>
                 <span class="text-lg font-bold text-white tracking-wider mr-2">TEO<span class="text-theme-orange">TEO</span></span>
@@ -335,7 +335,7 @@
             }
         }
         window.addEventListener("scroll", reveal);
-        reveal();
+        reveal(); // Trigger on load
     </script>
 </body>
 </html>
