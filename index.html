@@ -52,6 +52,7 @@
         .logo { display: flex; align-items: center; gap: 12px; font-weight: 900; font-size: 1.4rem; letter-spacing: 1px; }
         .logo img { width: 35px; border-radius: 8px; }
         
+        .nav-links { display: flex; align-items: center; }
         .nav-links a { 
             color: var(--text-muted); text-decoration: none; margin-left: 35px; 
             font-weight: 600; transition: 0.3s ease; position: relative;
@@ -94,8 +95,8 @@
 
         /* --- ПЕРВАЯ СЕКЦИЯ --- */
         .hero-screen {
-            height: 100vh; display: flex; align-items: center;
-            background-color: var(--bg-black); padding-top: 60px; box-sizing: border-box;
+            min-height: 100vh; display: flex; align-items: center;
+            background-color: var(--bg-black); padding-top: 100px; padding-bottom: 40px; box-sizing: border-box;
         }
 
         .hero-card {
@@ -105,7 +106,7 @@
             position: relative; overflow: hidden;
         }
 
-        .hero-content h1 { font-size: 4.5rem; margin: 0; font-weight: 900; line-height: 1.1; }
+        .hero-content h1 { font-size: 4.5rem; margin: 0; font-weight: 900; line-height: 1.1; word-wrap: break-word; }
         .highlight { color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
         .description { font-size: 1.25rem; color: #ccc; margin: 30px 0 40px 0; max-width: 650px; line-height: 1.6; }
 
@@ -115,14 +116,14 @@
             text-decoration: none; font-weight: 800; font-size: 1.1rem; display: inline-block;
             transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;
             position: relative;
-            z-index: 10; /* Кнопки всегда выше перекати-поля */
+            z-index: 10;
         }
         .btn-main:hover { transform: translateY(-3px); box-shadow: 0 15px 25px var(--accent-glow); }
 
         /* --- ВТОРАЯ СЕКЦИЯ --- */
         .bottom-screen {
             min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
-            padding: 120px 0 50px 0; position: relative;
+            padding: 80px 0 50px 0; position: relative;
         }
         .grid-layout { display: grid; grid-template-columns: 1fr 1.8fr; gap: 60px; z-index: 2; }
 
@@ -131,19 +132,20 @@
             background-color: #1a1a1a; border-radius: 30px; padding: 80px; border: 1px solid rgba(255, 255, 255, 0.05);
             min-height: 350px; display: flex; align-items: center; position: relative; overflow: hidden;
         }
+        .launcher-content h3 { font-size: 2.5rem; margin-top: 0; margin-bottom: 30px; line-height: 1.2; }
 
         /* =========================================
            АНИМАЦИЯ ПЕРЕКАТИ-ПОЛЯ (TUMBLEWEED)
         ========================================= */
-        
         .tumbleweed-container {
             position: fixed;
-            z-index: 5; /* Ниже кнопок, но выше фона */
+            z-index: 5;
             pointer-events: auto;
             cursor: pointer;
             left: -200px;
             top: -200px;
             user-select: none;
+            -webkit-tap-highlight-color: transparent; /* Убирает синий квадрат при тапе на мобилках */
         }
 
         .tumbleweed-bounce {
@@ -160,7 +162,6 @@
             transition: opacity 0.15s ease;
         }
 
-        /* Эффект взрыва */
         .explosion {
             position: absolute;
             top: 50%;
@@ -173,7 +174,6 @@
             z-index: 12;
         }
 
-        /* Золотой слиток */
         .gold-ingot {
             position: absolute;
             top: 50%;
@@ -205,6 +205,62 @@
         @keyframes spin-roll {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(-360deg); }
+        }
+
+        /* =========================================
+           АДАПТИВ ДЛЯ МОБИЛЬНЫХ (MEDIA QUERIES)
+        ========================================= */
+        @media (max-width: 992px) {
+            .hero-content h1 { font-size: 3.5rem; }
+            .grid-layout { grid-template-columns: 1fr; gap: 40px; } /* Блоки друг под другом */
+            .launcher-card { min-height: 250px; padding: 60px 40px; }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+            
+            /* Шапка */
+            .navbar { padding: 15px 0; }
+            .logo { font-size: 1.2rem; }
+            .logo img { width: 30px; }
+            .nav-links a { margin-left: 20px; font-size: 0.9rem; }
+
+            /* Счетчик */
+            .scoreboard {
+                top: 80px; 
+                right: 20px;
+                padding: 10px 15px;
+                gap: 10px;
+                border-radius: 12px;
+            }
+            .score-value { font-size: 1.4rem; }
+            .scoreboard img { width: 20px; }
+            .scoreboard-title { font-size: 0.65rem; }
+
+            /* Главный экран */
+            .hero-screen { padding-top: 130px; }
+            .hero-card { padding: 50px 30px; border-radius: 20px; }
+            .hero-content h1 { font-size: 2.8rem; }
+            .description { font-size: 1rem; margin: 20px 0 30px 0; }
+            .btn-main { padding: 15px 30px; font-size: 1rem; width: 100%; box-sizing: border-box; text-align: center; }
+
+            /* Лаунчер блок */
+            .launcher-card { padding: 40px 30px; }
+            .launcher-content h3 { font-size: 2rem; }
+        }
+
+        @media (max-width: 480px) {
+            /* Фиксы для совсем узких экранов (телефоны) */
+            .hero-content h1 { font-size: 2.2rem; }
+            .hero-card { padding: 40px 20px; }
+            
+            .nav-links a { margin-left: 15px; font-size: 0.85rem; }
+            
+            .launcher-content h3 { font-size: 1.8rem; }
+            
+            /* Уменьшаем перекати-поле на телефоне, чтобы было легче попасть, но не закрывало экран */
+            .tumbleweed-img { width: 65px; }
+            .explosion { width: 140px; }
         }
     </style>
 </head>
@@ -253,8 +309,8 @@
         <div class="container grid-layout">
             <div class="info-side">
                 <div class="footer-brand">
-                    <h2>TEOTEO</h2>
-                    <p>© 2026. Все права защищены.</p>
+                    <h2 style="font-size: 2rem; margin-top: 0;">TEOTEO</h2>
+                    <p style="color: var(--text-muted);">© 2026. Все права защищены.</p>
                 </div>
             </div>
             <div class="launcher-card">
@@ -291,25 +347,21 @@
             
             const w = window.innerWidth;
             const h = window.innerHeight;
-            const padding = 100; // Уменьшил отступ появления
+            const padding = 100;
             
-            // Зоны: теперь они шире (25% вместо 15%), чтобы объект был ближе к центру
             const safeMargin = 0.25; 
 
             const isHorizontal = Math.random() > 0.4; 
             let startX, startY, endX, endY;
 
             if (isHorizontal) {
-                // Движение в верхней или нижней четверти экрана
                 const isTop = Math.random() > 0.5;
-                // Добавили фиксированный минимальный отступ от края (50px), чтобы не прилипало к рамке
                 startY = isTop ? 50 + Math.random() * (h * safeMargin - 50) : h - 50 - (Math.random() * (h * safeMargin - 50));
-                endY = startY + (Math.random() * 100 - 50); // Более заметный наклон
+                endY = startY + (Math.random() * 100 - 50); 
                 
                 startX = Math.random() > 0.5 ? -padding : w + padding;
                 endX = startX < 0 ? w + padding : -padding;
             } else {
-                // Движение в левой или правой четверти экрана
                 const isLeft = Math.random() > 0.5;
                 startX = isLeft ? 50 + Math.random() * (w * safeMargin - 50) : w - 50 - (Math.random() * (w * safeMargin - 50));
                 endX = startX + (Math.random() * 100 - 50);
@@ -318,14 +370,13 @@
                 endY = startY < 0 ? h + padding : -padding;
             }
 
-            // Установка позиции
             tumbleweed.style.transition = 'none';
             tumbleweed.style.left = startX + 'px';
             tumbleweed.style.top = startY + 'px';
 
             tumbleweed.offsetHeight;
 
-            const duration = 5000 + Math.random() * 3000; // Чуть помедленнее для удобства клика
+            const duration = 5000 + Math.random() * 3000; 
             
             tumbleweed.style.transition = `left ${duration}ms linear, top ${duration}ms linear`;
             tumbleweed.style.left = endX + 'px';
@@ -339,11 +390,16 @@
             }, duration);
         }
 
-        tumbleweed.addEventListener('click', function(e) {
-            if (tumbleweedImg.style.opacity === '0') return;
+        // touchstart работает быстрее click на мобильных устройствах
+        tumbleweed.addEventListener('click', handleHit);
+        tumbleweed.addEventListener('touchstart', function(e) {
+            e.preventDefault(); // Запрещаем эмуляцию мыши после тапа
+            handleHit(e);
+        }, {passive: false});
 
-            // Предотвращаем клики сквозь объект (если нужно)
-            e.stopPropagation();
+        function handleHit(e) {
+            if (tumbleweedImg.style.opacity === '0') return;
+            if (e) e.stopPropagation();
 
             count++;
             scoreElement.innerText = count;
@@ -373,10 +429,12 @@
                 goldIngot.style.animation = '';
                 spawnTumbleweed();
             }, 1500);
-        });
+        }
 
         window.onload = spawnTumbleweed;
     </script>
 
 </body>
 </html>
+
+
