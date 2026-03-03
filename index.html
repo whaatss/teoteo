@@ -26,8 +26,6 @@
             font-family: 'Inter', sans-serif;
             margin: 0;
             overflow-x: hidden;
-            /* Скрываем контент до загрузки, чтобы не было прыжка скролла (опционально) */
-            opacity: 1; 
         }
 
         .container {
@@ -42,220 +40,171 @@
             width: 100%;
             top: 0;
             padding: 20px 0;
-            z-index: 50;
-            background: rgba(3, 3, 3, 0.6);
+            z-index: 100;
+            background: rgba(3, 3, 3, 0.8);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
         }
 
         .nav-container { display: flex; justify-content: space-between; align-items: center; }
-        .logo { display: flex; align-items: center; gap: 12px; font-weight: 900; font-size: 1.4rem; letter-spacing: 1px; }
+        .logo { display: flex; align-items: center; gap: 12px; font-weight: 900; font-size: 1.4rem; }
         .logo img { width: 35px; border-radius: 8px; }
-        
-        .nav-links { display: flex; align-items: center; }
-        .nav-links a { 
-            color: var(--text-muted); text-decoration: none; margin-left: 35px; 
-            font-weight: 600; transition: 0.3s ease; position: relative;
-        }
+        .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 35px; font-weight: 600; transition: 0.3s; }
         .nav-links a:hover { color: var(--text-white); }
 
-        /* --- СЧЕТЧИК (SCOREBOARD) --- */
+        /* --- SCOREBOARD --- */
         .scoreboard {
             position: fixed;
             top: 100px;
             right: 30px;
-            background: rgba(12, 12, 12, 0.8);
+            background: rgba(12, 12, 12, 0.9);
             border: 2px solid var(--accent);
-            padding: 15px 25px;
+            padding: 12px 20px;
             border-radius: 15px;
-            z-index: 100;
+            z-index: 90;
             box-shadow: 0 0 20px var(--accent-glow);
-            backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
-            gap: 15px;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            gap: 12px;
         }
-        .scoreboard.bump {
-            transform: scale(1.1);
-        }
-        .scoreboard-title {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-            margin-bottom: 2px;
-        }
-        .score-value {
-            font-size: 2rem;
-            font-weight: 900;
-            color: var(--accent);
-            line-height: 1;
-        }
+        .score-value { font-size: 1.8rem; font-weight: 900; color: var(--accent); }
 
-        /* --- ПЕРВАЯ СЕКЦИЯ --- */
+        /* --- HERO --- */
         .hero-screen {
             min-height: 100vh; display: flex; align-items: center;
-            background-color: var(--bg-black); padding-top: 100px; padding-bottom: 40px; box-sizing: border-box;
+            padding: 120px 0 60px;
         }
-
         .hero-card {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), url('background.jpg') center/cover;
-            background-color: #111; border-radius: 30px; padding: 100px 70px;
-            border: 1px solid rgba(255, 255, 255, 0.05); width: 100%; box-sizing: border-box;
-            position: relative; overflow: hidden;
+            background: linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1627398242454-45a1465c2479?auto=format&fit=crop&q=80&w=1920');
+            background-size: cover; background-position: center;
+            border-radius: 30px; padding: 100px 60px; border: 1px solid rgba(255,255,255,0.05);
         }
-
-        .hero-content h1 { font-size: 4.5rem; margin: 0; font-weight: 900; line-height: 1.1; word-wrap: break-word; }
-        .highlight { color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
-        .description { font-size: 1.25rem; color: #ccc; margin: 30px 0 40px 0; max-width: 650px; line-height: 1.6; }
+        .hero-content h1 { font-size: 4rem; margin: 0; font-weight: 900; line-height: 1.1; }
+        .highlight { color: var(--accent); text-shadow: 0 0 15px var(--accent-glow); }
+        .description { font-size: 1.2rem; color: #ccc; margin: 25px 0 40px; max-width: 600px; }
 
         /* --- КНОПКИ --- */
         .btn-main {
-            background: var(--accent); color: #000; padding: 18px 45px; border-radius: 12px;
-            text-decoration: none; font-weight: 800; font-size: 1.1rem; display: inline-block;
-            transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;
+            background: var(--accent); color: #000; padding: 16px 35px; border-radius: 12px;
+            text-decoration: none; font-weight: 800; text-transform: uppercase; transition: 0.3s;
+            display: inline-block;
+        }
+        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 10px 20px var(--accent-glow); }
+
+        /* --- СЕКЦИЯ С КАРТИНКАМИ (КАК MINEFITE) --- */
+        .showcase-section {
+            padding: 100px 0;
+            overflow: hidden;
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 50px;
+        }
+        .showcase-item {
             position: relative;
-            z-index: 10;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--card-bg);
         }
-        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 15px 25px var(--accent-glow); }
-
-        /* --- ВТОРАЯ СЕКЦИЯ --- */
-        .bottom-screen {
-            min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
-            padding: 80px 0 50px 0; position: relative;
+        .showcase-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
         }
-        .grid-layout { display: grid; grid-template-columns: 1fr 1.8fr; gap: 60px; z-index: 2; }
+        .showcase-item:hover img { transform: scale(1.05); }
 
+        .reveal-left { transform: translateX(-50px); opacity: 0; transition: 1s; }
+        .reveal-right { transform: translateX(50px); opacity: 0; transition: 1s; }
+        .reveal-left.active, .reveal-right.active { transform: translateX(0); opacity: 1; }
+
+        /* --- СЕКЦИЯ С ВИДЕО --- */
+        .video-section {
+            padding: 80px 0;
+            text-align: center;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 40px auto;
+            border-radius: 25px;
+            overflow: hidden;
+            border: 4px solid var(--card-bg);
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            aspect-ratio: 16/9;
+        }
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* --- ЛАУНЧЕР --- */
+        .launcher-section { padding: 100px 0; }
         .launcher-card {
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.85)), url('launcher-bg.jpg') center/cover;
-            background-color: #1a1a1a; border-radius: 30px; padding: 80px; border: 1px solid rgba(255, 255, 255, 0.05);
-            min-height: 350px; display: flex; align-items: center; position: relative; overflow: hidden;
+            background: #111; border-radius: 30px; padding: 60px;
+            display: flex; justify-content: space-between; align-items: center;
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        .launcher-content h3 { font-size: 2.5rem; margin-top: 0; margin-bottom: 30px; line-height: 1.2; }
 
-        /* =========================================
-           АНИМАЦИЯ ПЕРЕКАТИ-ПОЛЯ (TUMBLEWEED)
-        ========================================= */
+        /* --- TUMBLEWEED (ПЕРЕКАТИ-ПОЛЕ) --- */
         .tumbleweed-container {
-            position: fixed;
-            z-index: 5;
-            pointer-events: auto;
-            cursor: pointer;
-            left: -200px;
-            top: -200px;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
+            position: fixed; z-index: 5; pointer-events: auto; cursor: pointer;
+            left: -200px; top: -200px;
         }
-
-        .tumbleweed-bounce {
-            animation: bounce-chaotic 8s ease-in-out infinite;
-            position: relative;
-        }
-
-        .tumbleweed-img {
-            width: 80px;
-            height: auto;
-            opacity: 0.85;
-            animation: spin-roll 3s linear infinite;
-            filter: drop-shadow(0px 10px 10px rgba(0,0,0,0.5));
-            transition: opacity 0.15s ease;
-        }
-
-        .explosion {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 180px;
-            height: auto;
-            pointer-events: none;
-            display: none;
-            z-index: 12;
-        }
-
-        .gold-ingot {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50px;
-            pointer-events: none;
-            display: none;
-            z-index: 13;
-            image-rendering: pixelated;
-        }
-
-        @keyframes ingot-float {
-            0% { transform: translate(-50%, -50%) translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translate(-50%, -50%) translateY(-120px) rotate(30deg); opacity: 0; }
-        }
+        .tumbleweed-bounce { animation: bounce-chaotic 8s infinite; }
+        .tumbleweed-img { width: 80px; animation: spin-roll 3s linear infinite; }
+        .explosion { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 150px; display: none; }
+        .gold-ingot { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; display: none; image-rendering: pixelated; }
 
         @keyframes bounce-chaotic {
-            0%, 100% { transform: translateY(0px) scaleY(0.95); }
-            10% { transform: translateY(-150px) scaleY(1.05); }
-            25% { transform: translateY(0px) scaleY(0.95); }
-            40% { transform: translateY(-80px) scaleY(1); }
-            55% { transform: translateY(0px) scaleY(0.95); }
-            65% { transform: translateY(-30px) scaleY(1); }
-            75% { transform: translateY(0px) scaleY(0.95); }
-            85% { transform: translateY(-180px) scaleY(1.05); }
+            0%, 100% { transform: translateY(0); }
+            20% { transform: translateY(-100px); }
+            40% { transform: translateY(0); }
+            60% { transform: translateY(-50px); }
+            80% { transform: translateY(0); }
+        }
+        @keyframes spin-roll { 0% { transform: rotate(0); } 100% { transform: rotate(-360deg); } }
+        @keyframes ingot-float {
+            0% { transform: translate(-50%, -50%) translateY(0); opacity: 1; }
+            100% { transform: translate(-50%, -50%) translateY(-100px); opacity: 0; }
         }
 
-        @keyframes spin-roll {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(-360deg); }
-        }
-
-        /* =========================================
-           АДАПТИВ ДЛЯ МОБИЛЬНЫХ
-        ========================================= */
-        @media (max-width: 992px) {
-            .hero-content h1 { font-size: 3.5rem; }
-            .grid-layout { grid-template-columns: 1fr; gap: 40px; }
-            .launcher-card { min-height: 250px; padding: 60px 40px; }
-        }
-
+        /* АДАПТИВ */
         @media (max-width: 768px) {
-            .container { padding: 0 20px; }
-            .navbar { padding: 15px 0; }
-            .logo { font-size: 1.2rem; }
-            .nav-links a { margin-left: 20px; font-size: 0.9rem; }
-            .scoreboard { top: 80px; right: 20px; padding: 10px 15px; }
-            .score-value { font-size: 1.4rem; }
-            .hero-screen { padding-top: 130px; }
-            .hero-card { padding: 50px 30px; }
-            .hero-content h1 { font-size: 2.8rem; }
-            .description { font-size: 1rem; }
-            .btn-main { padding: 15px 30px; width: 100%; text-align: center; }
-            .launcher-content h3 { font-size: 2rem; }
-        }
-
-        @media (max-width: 480px) {
-            .hero-content h1 { font-size: 2.2rem; }
-            .tumbleweed-img { width: 65px; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .image-grid { grid-template-columns: 1fr; }
+            .launcher-card { flex-direction: column; text-align: center; gap: 30px; }
+            .scoreboard { top: auto; bottom: 20px; right: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- СЧЕТЧИК -->
     <div class="scoreboard" id="scoreboard">
-        <div>
-            <div class="scoreboard-title">Разбито</div>
-            <div class="score-value" id="score-count">0</div>
-        </div>
-        <img src="sr2327cb1dd7ff0.png" width="30" alt="Золотой слиток" style="image-rendering: pixelated;">
+        <div class="score-value" id="score-count">0</div>
+        <img src="sr2327cb1dd7ff0.png" width="25" alt="Gold">
     </div>
 
     <nav class="navbar">
         <div class="container nav-container">
-            <div class="logo">
-                <img src="logo.png" alt="Logo" onerror="this.style.display='none'">
-                <span>TEOTEO</span>
-            </div>
+            <div class="logo">TEOTEO</div>
             <div class="nav-links">
                 <a href="#">Форум</a>
                 <a href="#">Донат</a>
@@ -264,157 +213,128 @@
     </nav>
 
     <section class="hero-screen">
-        <div class="container" style="width: 100%;">
+        <div class="container">
             <div class="hero-card">
                 <div class="hero-content">
                     <h1>TEOTEO — <br><span class="highlight">Minecraft сумасшествие!</span></h1>
-                    <p class="description">
-                        Мир в котором может твориться хаос и царить гармония! <br>
-                        Мир где можно войти в дверь либо в окно! Дикий Запад.
-                    </p>
-                    <div class="hero-btns">
-                        <a href="#start-section" class="btn-main">Начать игру ▶</a>
-                    </div>
+                    <p class="description">Мир, где царит Дикий Запад, безумие и полная свобода действий. Начни свой путь прямо сейчас!</p>
+                    <a href="#showcase" class="btn-main">Исследовать мир ↓</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="start-section" class="bottom-screen">
-        <div class="container grid-layout">
-            <div class="info-side">
-                <div class="footer-brand">
-                    <h2 style="font-size: 2rem; margin-top: 0;">TEOTEO</h2>
-                    <p style="color: var(--text-muted);">© 2026. Все права защищены.</p>
+    <!-- СЕКЦИЯ С КАРТИНКАМИ (REVEAL ANIMATION) -->
+    <section class="showcase-section" id="showcase">
+        <div class="container">
+            <h2 class="reveal" style="font-size: 3rem; text-align: center; margin-bottom: 50px;">НАШ <span class="highlight">МИР</span></h2>
+            
+            <div class="image-grid">
+                <div class="showcase-item reveal-left">
+                    <img src="unnamed.jpg" alt="Minecraft World 1" onerror="this.src='https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?auto=format&fit=crop&q=80&w=800'">
                 </div>
-            </div>
-            <div class="launcher-card">
-                <div class="launcher-content">
-                    <h3>Наш собственный<br>лаунчер</h3>
-                    <a href="#" class="btn-main">Загрузить ⬇</a>
+                <div class="showcase-item reveal-right">
+                    <img src="unnamed (1).jpg" alt="Minecraft World 2" onerror="this.src='https://images.unsplash.com/photo-1614850715649-1d0106293bd1?auto=format&fit=crop&q=80&w=800'">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ПЕРЕКАТИ-ПОЛЕ -->
+    <!-- ВИДЕО СЕКЦИЯ -->
+    <section class="video-section">
+        <div class="container">
+            <h2 class="reveal" style="font-size: 2.5rem;">ТРЕЙЛЕР <span class="highlight">ПРИКЛЮЧЕНИЙ</span></h2>
+            <div class="video-container reveal">
+                <iframe src="https://www.youtube.com/embed/BWsO9j6QcGg" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+
+    <section class="launcher-section">
+        <div class="container">
+            <div class="launcher-card reveal">
+                <div>
+                    <h2 style="font-size: 2.5rem; margin: 0 0 10px;">Наш лаунчер</h2>
+                    <p style="color: var(--text-muted);">Эксклюзивные моды и стабильная игра.</p>
+                </div>
+                <a href="#" class="btn-main">Скачать клиент ⬇</a>
+            </div>
+        </div>
+    </section>
+
     <div class="tumbleweed-container" id="tumbleweed">
         <div class="tumbleweed-bounce">
-            <img src="1691660596_grizly-club-p-kartinki-perekati-pole-bez-fona-47.png" alt="Перекати-поле" class="tumbleweed-img" id="tumbleweed-img">
-            <img src="explosion_generator.gif" alt="Взрыв" class="explosion" id="explosion-gif">
-            <img src="sr2327cb1dd7ff0.png" alt="Золотой слиток" class="gold-ingot" id="gold-ingot">
+            <img src="1691660596_grizly-club-p-kartinki-perekati-pole-bez-fona-47.png" class="tumbleweed-img" id="tumbleweed-img">
+            <img src="explosion_generator.gif" class="explosion" id="explosion-gif">
+            <img src="sr2327cb1dd7ff0.png" class="gold-ingot" id="gold-ingot">
         </div>
     </div>
 
     <script>
-        // --- ФИКС СКРОЛЛА ПРИ ЗАГРУЗКЕ ---
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
-        }
+        // --- ПРИНУДИТЕЛЬНЫЙ ВЕРХ ---
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
         window.scrollTo(0, 0);
 
+        // --- REVEAL ANIMATION (SCROLL SPY) ---
+        function reveal() {
+            const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        window.addEventListener('scroll', reveal);
+
+        // --- TUMBLEWEED LOGIC ---
         const tumbleweed = document.getElementById('tumbleweed');
         const tumbleweedImg = document.getElementById('tumbleweed-img');
         const explosionGif = document.getElementById('explosion-gif');
         const goldIngot = document.getElementById('gold-ingot');
         const scoreElement = document.getElementById('score-count');
-        const scoreboard = document.getElementById('scoreboard');
-
         let count = 0;
-        let activeAnimation = null;
 
         function spawnTumbleweed() {
-            tumbleweedImg.style.opacity = '0.85';
-            
+            tumbleweedImg.style.opacity = '1';
             const w = window.innerWidth;
             const h = window.innerHeight;
-            const padding = 100;
-            const safeMargin = 0.25; 
-
-            const isHorizontal = Math.random() > 0.4; 
-            let startX, startY, endX, endY;
-
-            if (isHorizontal) {
-                const isTop = Math.random() > 0.5;
-                startY = isTop ? 50 + Math.random() * (h * safeMargin - 50) : h - 50 - (Math.random() * (h * safeMargin - 50));
-                endY = startY + (Math.random() * 100 - 50); 
-                startX = Math.random() > 0.5 ? -padding : w + padding;
-                endX = startX < 0 ? w + padding : -padding;
-            } else {
-                const isLeft = Math.random() > 0.5;
-                startX = isLeft ? 50 + Math.random() * (w * safeMargin - 50) : w - 50 - (Math.random() * (w * safeMargin - 50));
-                endX = startX + (Math.random() * 100 - 50);
-                startY = Math.random() > 0.5 ? -padding : h + padding;
-                endY = startY < 0 ? h + padding : -padding;
-            }
-
+            
             tumbleweed.style.transition = 'none';
-            tumbleweed.style.left = startX + 'px';
-            tumbleweed.style.top = startY + 'px';
-            tumbleweed.offsetHeight;
+            tumbleweed.style.left = '-150px';
+            tumbleweed.style.top = (Math.random() * (h - 200) + 100) + 'px';
+            
+            setTimeout(() => {
+                tumbleweed.style.transition = 'left 8s linear';
+                tumbleweed.style.left = (w + 150) + 'px';
+            }, 100);
 
-            const duration = 5000 + Math.random() * 3000; 
-            tumbleweed.style.transition = `left ${duration}ms linear, top ${duration}ms linear`;
-            tumbleweed.style.left = endX + 'px';
-            tumbleweed.style.top = endY + 'px';
-
-            if (activeAnimation) clearTimeout(activeAnimation);
-            activeAnimation = setTimeout(() => {
-                if (tumbleweedImg.style.opacity !== '0') {
-                    spawnTumbleweed();
-                }
-            }, duration);
+            setTimeout(spawnTumbleweed, 12000);
         }
 
-        tumbleweed.addEventListener('click', handleHit);
-        tumbleweed.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            handleHit(e);
-        }, {passive: false});
-
-        function handleHit(e) {
+        tumbleweed.onclick = () => {
             if (tumbleweedImg.style.opacity === '0') return;
-            if (e) e.stopPropagation();
-
             count++;
             scoreElement.innerText = count;
-            scoreboard.classList.add('bump');
-            setTimeout(() => scoreboard.classList.remove('bump'), 200);
-
+            
             tumbleweedImg.style.opacity = '0';
-            const rect = tumbleweed.getBoundingClientRect();
-            tumbleweed.style.transition = 'none';
-            tumbleweed.style.left = rect.left + 'px';
-            tumbleweed.style.top = rect.top + 'px';
-            
-            const currentExplosionSrc = explosionGif.src;
-            explosionGif.src = '';
-            explosionGif.src = currentExplosionSrc;
             explosionGif.style.display = 'block';
-            
             goldIngot.style.display = 'block';
-            goldIngot.style.animation = 'ingot-float 1.5s forwards ease-out';
+            goldIngot.style.animation = 'ingot-float 1s forwards';
 
             setTimeout(() => {
                 explosionGif.style.display = 'none';
-            }, 1000);
-
-            setTimeout(() => {
                 goldIngot.style.display = 'none';
                 goldIngot.style.animation = '';
-                spawnTumbleweed();
-            }, 1500);
-        }
+            }, 1000);
+        };
 
-        window.onload = function() {
-            // Принудительно скроллим вверх еще раз после полной загрузки всех ресурсов
-            setTimeout(() => {
-                window.scrollTo(0, 0);
-            }, 10);
+        window.onload = () => {
+            reveal(); // Проверка видимости при загрузке
             spawnTumbleweed();
         };
     </script>
-
 </body>
 </html>
-
