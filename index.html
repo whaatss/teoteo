@@ -8,40 +8,75 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for Wild West Theme -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rye&display=swap" rel="stylesheet">
     <style>
         /* Custom Styles and Animations */
         body {
-            background-color: #000000;
+            background-color: #050505;
             color: #FFFFFF;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* Базовая плавная прокрутка через CSS */
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             scroll-behavior: smooth;
             overflow-x: hidden;
         }
 
-        /* Glassmorphism effect */
-        .glass-panel {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        /* Ambient Background Glows (Minefite vibe) */
+        .ambient-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.4;
         }
 
-        /* Minefite style cards */
+        /* Glassmorphism effect */
+        .glass-panel {
+            background: rgba(15, 15, 18, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Minefite style cards with hover glow */
         .minefite-card {
             background: rgba(20, 20, 25, 0.4);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 1.5rem;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
         }
         
+        .minefite-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(249, 115, 22, 0.4), transparent);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
         .minefite-card:hover {
             border-color: rgba(249, 115, 22, 0.3);
-            box-shadow: 0 10px 40px -10px rgba(249, 115, 22, 0.15);
-            transform: translateY(-4px);
-            background: rgba(20, 20, 25, 0.7);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.7), 0 0 20px rgba(249, 115, 22, 0.1);
+            transform: translateY(-8px) scale(1.01);
+            background: rgba(25, 25, 30, 0.8);
+        }
+
+        .minefite-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Western Font applied to titles */
+        .font-western {
+            font-family: 'Rye', serif;
+            font-weight: normal;
+            text-transform: uppercase;
         }
 
         .text-theme-orange { color: #F97316; }
@@ -49,68 +84,56 @@
 
         .btn-hover-effect {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .btn-hover-effect:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.4);
-        }
-
-        .btn-secondary-hover {
-            transition: all 0.3s ease;
-        }
-        .btn-secondary-hover:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-
-        /* Full screen sections like Hero */
-        .full-screen-section {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
             position: relative;
             overflow: hidden;
         }
+        .btn-hover-effect:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.5);
+        }
 
-        /* Scroll Animation Classes */
+        /* Modal Overlay */
+        #instruction-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #instruction-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Scroll Animation Classes (Minefite style) */
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
+            transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Scoreboard */
+        /* Scoreboard (Gold Counter) */
         .gold-counter {
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid #F97316;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(249, 115, 22, 0.2);
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .gold-counter.bump {
-            transform: scale(1.15);
-        }
-
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            background: #000;
-        }
-        .video-container iframe {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(20, 20, 25, 0.8);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 999px;
+            box-shadow: 0 0 15px rgba(249, 115, 22, 0.1);
         }
 
         /* TUMBLEWEED MECHANICS */
         .tumbleweed-container {
             position: fixed;
-            z-index: 100;
+            z-index: 90;
             pointer-events: auto;
             cursor: pointer;
             left: -200px;
@@ -118,14 +141,10 @@
         }
         .tumbleweed-bounce {
             animation: bounce-chaotic 8s ease-in-out infinite;
-            position: relative;
         }
         .tumbleweed-img {
             width: 80px;
-            height: auto;
-            opacity: 0.85;
             animation: spin-roll 3s linear infinite;
-            filter: drop-shadow(0px 10px 10px rgba(0,0,0,0.5));
         }
         .explosion {
             position: absolute;
@@ -133,7 +152,6 @@
             transform: translate(-50%, -50%);
             width: 180px;
             display: none;
-            z-index: 12;
         }
         .gold-ingot {
             position: absolute;
@@ -141,7 +159,6 @@
             transform: translate(-50%, -50%);
             width: 50px;
             display: none;
-            z-index: 13;
             image-rendering: pixelated;
         }
 
@@ -155,149 +172,174 @@
             25% { transform: translateY(0px) scaleY(0.95); }
             40% { transform: translateY(-80px) scaleY(1); }
             55% { transform: translateY(0px) scaleY(0.95); }
-            65% { transform: translateY(-30px) scaleY(1); }
-            75% { transform: translateY(0px) scaleY(0.95); }
             85% { transform: translateY(-180px) scaleY(1.05); }
         }
         @keyframes spin-roll {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(-360deg); }
         }
+
+        /* Text Gradients */
+        .text-gradient-orange {
+            background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col relative overflow-x-hidden">
 
-    <!-- Header Navigation -->
-    <header class="glass-panel sticky top-0 z-50 px-6 py-4 flex justify-between items-center border-b border-gray-900">
-        <div class="flex items-center space-x-2">
-            <span class="text-2xl font-black tracking-wider text-white">TEO<span class="text-theme-orange">TEO</span></span>
-        </div>
-        
-        <nav class="hidden md:flex space-x-8 text-sm font-medium text-gray-300">
-            <a href="#" class="nav-link hover:text-white transition-colors">Главная</a>
-            <a href="#" class="nav-link hover:text-white transition-colors">Форум</a>
-            <a href="#download-section" class="nav-link hover:text-white transition-colors">Донат</a>
-            <a href="#" class="nav-link hover:text-white transition-colors">Правила</a>
-        </nav>
+    <!-- Фоновые свечения -->
+    <div class="ambient-glow bg-orange-600/10 w-[600px] h-[600px] top-[-100px] left-[-200px]"></div>
+    <div class="ambient-glow bg-orange-900/10 w-[800px] h-[800px] bottom-[20%] right-[-300px]"></div>
 
-        <div class="flex items-center space-x-4">
-            <div id="scoreboard" class="gold-counter px-4 py-2 flex flex-col items-center">
-                <span class="text-[10px] text-gray-400 uppercase tracking-wider mb-1">Разбито</span>
-                <div class="flex items-center space-x-2">
-                    <span id="score-count" class="text-xl font-bold text-theme-orange">0</span>
-                    <img src="sr2327cb1dd7ff0.png" width="20" alt="Золотой слиток" style="image-rendering: pixelated;" onerror="this.style.display='none'">
+    <!-- Header Navigation -->
+    <div class="fixed top-6 w-full z-50 flex justify-center px-4">
+        <header class="glass-panel w-full max-w-5xl rounded-full px-8 py-3 flex justify-between items-center shadow-2xl">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl font-black tracking-widest text-white">TEO<span class="text-theme-orange">TEO</span></span>
+            </div>
+            
+            <nav class="hidden md:flex space-x-10 text-sm font-bold text-gray-300 uppercase tracking-widest">
+                <button onclick="openModal()" class="hover:text-theme-orange transition-colors">Как играть</button>
+                <a href="#" class="hover:text-white transition-colors">Правила</a>
+                <a href="https://boosty.to/" target="_blank" class="text-theme-orange hover:text-white transition-all scale-110">BOOSTY</a>
+                <a href="https://discord.gg/Y7xca5gBbB" target="_blank" class="hover:text-[#5865F2] transition-colors"><i class="fa-brands fa-discord mr-1"></i> Discord</a>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <div id="scoreboard" class="gold-counter px-4 py-1.5 flex items-center space-x-2">
+                    <span id="score-count" class="text-lg font-black text-white">0</span>
+                    <img src="sr2327cb1dd7ff0.png" width="16" alt="Золото" style="image-rendering: pixelated;" onerror="this.style.display='none'">
                 </div>
             </div>
-            <button class="md:hidden text-gray-300 hover:text-white">
-                <i class="fa-solid fa-bars text-xl"></i>
-            </button>
-        </div>
-    </header>
+        </header>
+    </div>
 
     <main class="flex-grow">
 
-        <!-- HERO SECTION (Первый экран) -->
-        <section class="full-screen-section border-b border-gray-900">
-            <img src="background.jpg" alt="[Фоновое изображение]" class="absolute inset-0 w-full h-full object-cover opacity-80" onerror="this.src='https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&w=1920&q=80'" />
-            <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent"></div>
+        <!-- HERO SECTION -->
+        <section class="min-h-screen flex items-center relative overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img src="background.jpg" alt="Фон" class="w-full h-full object-cover opacity-30" onerror="this.src='https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&w=1920&q=80'" />
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/60 to-[#050505]"></div>
+            </div>
             
-            <div class="container mx-auto px-6 relative z-10">
+            <div class="container mx-auto px-6 relative z-10 text-center md:text-left">
                 <div class="max-w-4xl">
-                    <h1 class="text-6xl md:text-8xl font-black text-white leading-tight mb-6" style="text-shadow: 0 4px 15px rgba(0,0,0,0.5);">
-                        TEOTEO - <br>
-                        <span class="text-theme-orange">Minecraft<br>сумасшествие.</span>
+                    <h1 class="text-5xl md:text-8xl font-western text-white leading-[1.1] mb-8 tracking-wide reveal">
+                        МИР ДИКОГО <br>
+                        <span class="text-gradient-orange">СУМАСШЕСТВИЯ</span>
                     </h1>
-                    <p class="text-gray-200 text-xl md:text-2xl mb-10 max-w-2xl font-medium" style="text-shadow: 0 2px 4px rgba(0,0,0,0.8);">
-                        Мир, в котором может твориться хаос и царить гармония! <br>
-                        Мир, где можно войти в дверь либо в окно! Дикий Запад.
+                    <p class="text-gray-400 text-lg md:text-2xl mb-12 max-w-2xl font-medium leading-relaxed reveal" style="transition-delay: 100ms;">
+                        Атмосферный RolePlay сервер в сеттинге Дикого Запада. Мир хаоса, дуэлей и настоящей свободы. Войди в дверь или выбей окно!
                     </p>
-                    <div class="flex flex-wrap gap-4">
-                        <a href="#features" class="smooth-scroll bg-theme-orange text-white font-bold py-5 px-10 rounded-xl btn-hover-effect flex items-center space-x-3 text-lg">
-                            <span>ИССЛЕДОВАТЬ МИР</span>
-                            <i class="fa-solid fa-arrow-down"></i>
-                        </a>
-                        <a href="#download-section" class="smooth-scroll bg-black/40 backdrop-blur-md border border-white/20 text-white font-bold py-5 px-10 rounded-xl btn-secondary-hover flex items-center space-x-3 text-lg">
-                            <i class="fa-solid fa-download"></i>
-                            <span>СКАЧАТЬ ЛАУНЧЕР</span>
+                    <div class="flex flex-wrap gap-5 justify-center md:justify-start reveal" style="transition-delay: 200ms;">
+                        <button onclick="openModal()" class="bg-theme-orange text-white font-black py-5 px-12 rounded-2xl btn-hover-effect flex items-center space-x-4 text-xl tracking-widest shadow-xl shadow-orange-600/20">
+                            <i class="fa-solid fa-play"></i>
+                            <span>НАЧАТЬ ИГРАТЬ</span>
+                        </button>
+                        <a href="https://discord.gg/Y7xca5gBbB" target="_blank" class="bg-white/5 border border-white/10 text-white font-bold py-5 px-10 rounded-2xl hover:bg-white/10 transition-all flex items-center space-x-3 text-lg">
+                            <i class="fa-brands fa-discord text-2xl"></i>
+                            <span>СООБЩЕСТВО</span>
                         </a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- MIDDLE CONTENT (Средняя часть сайта) -->
-        <div id="features" class="container mx-auto px-6 py-24">
-            
-            <!-- Feature 1 -->
-            <div class="reveal minefite-card p-12 mb-24 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-                <div class="order-2 md:order-1 overflow-hidden rounded-3xl border border-gray-800">
-                    <img src="unnamed.jpg" alt="[Пейзаж]" class="w-full h-[400px] object-cover hover:scale-105 transition-transform duration-700">
+        <!-- FEATURES SECTION -->
+        <section class="container mx-auto px-6 py-32 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
+                <div class="minefite-card p-10 reveal">
+                    <div class="w-16 h-16 rounded-2xl bg-orange-500/10 flex items-center justify-center text-theme-orange text-3xl mb-8 border border-orange-500/20">
+                        <i class="fa-solid fa-gun"></i>
+                    </div>
+                    <h3 class="text-2xl font-western mb-4 text-white">Арсенал</h3>
+                    <p class="text-gray-400 leading-relaxed">Кастомные револьверы и винтовки с уникальной баллистикой и звуками стрельбы.</p>
                 </div>
-                <div class="order-1 md:order-2 space-y-8">
-                    <h2 class="text-5xl font-black">Невероятные <span class="text-theme-orange">пейзажи</span></h2>
-                    <p class="text-gray-400 text-xl leading-relaxed">Откройте для себя мир, проработанный до мельчайших деталей. Мы создали уникальные локации Дикого Запада.</p>
-                    <div class="flex items-center space-x-4 text-theme-orange font-bold text-lg">
-                        <div class="h-[2px] w-12 bg-theme-orange"></div>
-                        <span>АТМОСФЕРА БЕЗУМИЯ</span>
+                <div class="minefite-card p-10 reveal" style="transition-delay: 150ms;">
+                    <div class="w-16 h-16 rounded-2xl bg-orange-500/10 flex items-center justify-center text-theme-orange text-3xl mb-8 border border-orange-500/20">
+                        <i class="fa-solid fa-horse"></i>
+                    </div>
+                    <h3 class="text-2xl font-western mb-4 text-white">Ранчо</h3>
+                    <p class="text-gray-400 leading-relaxed">Разводите лошадей, занимайтесь сельским хозяйством или станьте крупным землевладельцем.</p>
+                </div>
+                <div class="minefite-card p-10 reveal" style="transition-delay: 300ms;">
+                    <div class="w-16 h-16 rounded-2xl bg-orange-500/10 flex items-center justify-center text-theme-orange text-3xl mb-8 border border-orange-500/20">
+                        <i class="fa-solid fa-briefcase"></i>
+                    </div>
+                    <h3 class="text-2xl font-western mb-4 text-white">Карьера</h3>
+                    <p class="text-gray-400 leading-relaxed">От шерифа до охотника за головами — выберите свой путь в суровом мире фронтира.</p>
+                </div>
+            </div>
+
+            <!-- ГАЛЕРЕЯ (Изображения с анимацией Minefite) -->
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-4xl md:text-6xl font-western tracking-wide text-white mb-6">АТМОСФЕРА <span class="text-theme-orange">ПРОЕКТА</span></h2>
+                <div class="w-24 h-1 bg-theme-orange mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- Большое изображение 1 -->
+                <div class="reveal minefite-card overflow-hidden group">
+                    <div class="relative h-[450px]">
+                        <img src="unnamed.jpg" alt="Пейзаж" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[1.5s] ease-out" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-10">
+                            <div>
+                                <h4 class="text-2xl font-western text-white mb-2">Бескрайние каньоны</h4>
+                                <p class="text-gray-400">Исследуйте каждый уголок нашей проработанной карты</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Большое изображение 2 -->
+                <div class="reveal minefite-card overflow-hidden group" style="transition-delay: 200ms;">
+                    <div class="relative h-[450px]">
+                        <img src="unnamed (1).jpg" alt="Персонаж" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[1.5s] ease-out" onerror="this.src='https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&w=1200&q=80'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-10">
+                            <div>
+                                <h4 class="text-2xl font-western text-white mb-2">Живые города</h4>
+                                <p class="text-gray-400">Встречайтесь в салунах и участвуйте в жизни города</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Дополнительные плашки -->
+                <div class="reveal minefite-card overflow-hidden group col-span-1 md:col-span-2">
+                    <div class="relative h-[400px]">
+                        <img src="https://images.unsplash.com/photo-1588615419958-84224b1701ed?auto=format&fit=crop&w=1600&q=80" alt="Ночной лагерь" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[1.5s] ease-out">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-10">
+                            <div>
+                                <h4 class="text-3xl font-western text-theme-orange mb-2">Уникальные события</h4>
+                                <p class="text-gray-300 text-lg">Каждую неделю — новые ивенты, от ограблений поездов до масштабных войн банд.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Video Section -->
-            <div class="reveal mb-24 text-center">
-                <h2 class="text-4xl md:text-6xl font-black mb-12 uppercase">Посмотри на это в <span class="text-theme-orange">действии</span></h2>
-                <div class="minefite-card p-6 max-w-5xl mx-auto">
-                    <div class="video-container rounded-2xl overflow-hidden border border-gray-800">
-                        <iframe src="https://www.youtube.com/embed/BWsO9j6QcGg" title="Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Feature 2 -->
-            <div class="reveal minefite-card p-12 mb-24 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-                <div class="space-y-8">
-                    <h2 class="text-5xl font-black">Твоя <span class="text-theme-orange">история</span></h2>
-                    <p class="text-gray-400 text-xl leading-relaxed">Будь кем захочешь. Здесь нет границ, только твой выбор и твои правила.</p>
-                    <ul class="space-y-4">
-                        <li class="flex items-center space-x-4 text-gray-200 text-lg font-medium">
-                            <i class="fa-solid fa-circle-check text-theme-orange"></i>
-                            <span>Кастомное оружие того времени</span>
-                        </li>
-                        <li class="flex items-center space-x-4 text-gray-200 text-lg font-medium">
-                            <i class="fa-solid fa-circle-check text-theme-orange"></i>
-                            <span>Уникальные RP механики</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="overflow-hidden rounded-3xl border border-gray-800">
-                    <img src="unnamed (1).jpg" alt="[Персонаж]" class="w-full h-[400px] object-cover hover:scale-105 transition-transform duration-700">
-                </div>
-            </div>
-
-        </div>
+        </section>
 
         <!-- DOWNLOAD SECTION -->
-        <section id="download-section" class="full-screen-section border-t border-gray-900 bg-black">
-            <!-- Фон лаунчера -->
-            <img src="launcher-bg.jpg" alt="[Фон лаунчера]" class="absolute inset-0 w-full h-full object-cover opacity-60" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=80'" />
-            <div class="absolute inset-0 bg-gradient-to-l from-black/80 via-black/40 to-black/90"></div>
-            
-            <div class="container mx-auto px-6 relative z-10 flex justify-end">
-                <div class="max-w-3xl text-right">
-                    <h2 class="text-6xl md:text-8xl font-black text-white leading-tight mb-8">
-                        Наш собственный<br>
-                        <span class="text-theme-orange">ЛАУНЧЕР</span>
-                    </h2>
-                    <p class="text-gray-300 text-xl md:text-2xl mb-12 font-medium ml-auto max-w-xl">
-                        Мы создали лучшее решение для комфортной игры. Забудь о долгой настройке — нажми кнопку и ты уже в игре.
-                    </p>
-                    <div class="flex justify-end">
-                        <button class="bg-theme-orange text-white font-black py-6 px-14 rounded-2xl btn-hover-effect flex items-center space-x-4 text-2xl shadow-[0_0_50px_rgba(249,115,22,0.4)]">
-                            <i class="fa-solid fa-download"></i>
-                            <span>СКАЧАТЬ ДЛЯ WINDOWS</span>
-                        </button>
-                    </div>
-                    <p class="text-gray-500 mt-6 text-sm uppercase tracking-widest font-bold">Текущая версия: 2.4.1 | 64-bit</p>
+        <section id="download-section" class="py-32 relative overflow-hidden bg-[#0a0a0c] border-t border-white/5">
+            <div class="container mx-auto px-6 relative z-10 text-center">
+                <h2 class="text-5xl md:text-7xl font-western text-white mb-8 tracking-wide reveal">
+                    СКАЧАЙ <span class="text-gradient-orange">ЛАУНЧЕР</span>
+                </h2>
+                <p class="text-gray-400 text-xl mb-12 max-w-2xl mx-auto reveal" style="transition-delay: 100ms;">
+                    Наше собственное приложение обеспечит моментальный вход в игру без лишних настроек.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-5 reveal" style="transition-delay: 200ms;">
+                    <button class="bg-theme-orange text-white font-black py-5 px-12 rounded-2xl btn-hover-effect flex items-center justify-center space-x-4 text-xl shadow-[0_0_40px_rgba(249,115,22,0.3)]">
+                        <i class="fa-brands fa-windows text-2xl"></i>
+                        <span>ДЛЯ WINDOWS</span>
+                    </button>
+                    <button class="bg-white/5 border border-white/10 text-white font-bold py-5 px-10 rounded-2xl hover:bg-white/10 transition-all flex items-center justify-center space-x-3 text-lg">
+                        <i class="fa-brands fa-apple text-xl"></i>
+                        <span>ДЛЯ MACOS</span>
+                    </button>
                 </div>
             </div>
         </section>
@@ -305,18 +347,44 @@
     </main>
 
     <!-- Footer -->
-    <footer class="glass-panel border-t border-gray-900 py-12 relative z-10">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-            <div class="mb-6 md:mb-0">
-                <span class="text-2xl font-black text-white tracking-wider">TEO<span class="text-theme-orange">TEO</span></span>
-                <p class="text-gray-500 mt-2">&copy; 2026. Дикий Запад ждет тебя.</p>
+    <footer class="bg-[#050505] border-t border-white/5 py-16 relative z-10">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="text-center md:text-left">
+                <span class="text-3xl font-black text-white tracking-widest">TEO<span class="text-theme-orange">TEO</span></span>
+                <p class="text-gray-600 mt-2 text-sm">© 2026 TEOTEO. Не связано с Mojang AB.</p>
             </div>
-            <div class="flex space-x-8">
-                <a href="#" class="text-3xl text-gray-400 hover:text-[#5865F2] transition-all"><i class="fa-brands fa-discord"></i></a>
-                <a href="#" class="text-3xl text-gray-400 hover:text-white transition-all"><i class="fa-brands fa-vk"></i></a>
+            <div class="flex space-x-10 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                <a href="#" class="hover:text-white transition-colors">Главная</a>
+                <a href="#" class="hover:text-white transition-colors">Договор</a>
+                <a href="https://boosty.to/" target="_blank" class="hover:text-theme-orange transition-colors">Boosty</a>
+                <a href="https://discord.gg/Y7xca5gBbB" target="_blank" class="hover:text-[#5865F2] transition-colors">Discord</a>
             </div>
         </div>
     </footer>
+
+    <!-- Modal Instruction -->
+    <div id="instruction-modal" onclick="closeModal(event)">
+        <div class="modal-content overflow-hidden max-w-2xl w-full mx-4 rounded-[2rem] bg-[#0a0a0c] border border-white/10" onclick="event.stopPropagation()">
+            <div class="p-10">
+                <h2 class="text-3xl font-western mb-8 text-white">КАК <span class="text-theme-orange">ИГРАТЬ?</span></h2>
+                <div class="space-y-6">
+                    <div class="flex gap-6 p-4 rounded-2xl bg-white/5 border border-white/5">
+                        <div class="bg-theme-orange w-12 h-12 rounded-xl flex items-center justify-center font-black italic">1</div>
+                        <p class="text-gray-300">Скачайте и установите наш лаунчер для вашей ОС.</p>
+                    </div>
+                    <div class="flex gap-6 p-4 rounded-2xl bg-white/5 border border-white/5">
+                        <div class="bg-theme-orange w-12 h-12 rounded-xl flex items-center justify-center font-black italic">2</div>
+                        <p class="text-gray-300">Авторизуйтесь в системе под своим никнеймом.</p>
+                    </div>
+                    <div class="flex gap-6 p-4 rounded-2xl bg-white/5 border border-white/5">
+                        <div class="bg-theme-orange w-12 h-12 rounded-xl flex items-center justify-center font-black italic">3</div>
+                        <p class="text-gray-300">Выберите сервер TEOTEO и отправляйтесь в путь!</p>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="w-full mt-10 py-5 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl transition-all tracking-widest uppercase">ЗАКРЫТЬ</button>
+            </div>
+        </div>
+    </div>
 
     <!-- TUMBLEWEED -->
     <div class="tumbleweed-container" id="tumbleweed">
@@ -328,107 +396,69 @@
     </div>
 
     <script>
-        // Smooth Scroll Logic for buttons and links
-        document.querySelectorAll('.smooth-scroll, .nav-link').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                const targetId = this.getAttribute('href');
-                if (targetId.startsWith('#') && targetId.length > 1) {
-                    e.preventDefault();
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        // Рассчитываем позицию с учетом высоты хедера
-                        const headerOffset = 80;
-                        const elementPosition = targetElement.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        // Modal Control
+        const modal = document.getElementById('instruction-modal');
+        function openModal() {
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() {
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
 
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: 'smooth'
-                        });
-                    }
+        // Reveal Animation on Scroll
+        function reveal() {
+            const reveals = document.querySelectorAll(".reveal");
+            reveals.forEach(el => {
+                const windowHeight = window.innerHeight;
+                const elementTop = el.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) {
+                    el.classList.add("active");
                 }
             });
-        });
-
-        // Scroll Reveal Animation on scroll
-        function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                if (elementTop < windowHeight - 150) {
-                    reveals[i].classList.add("active");
-                }
-            }
         }
         window.addEventListener("scroll", reveal);
         reveal();
 
-        // Tumbleweed Game Logic
+        // Tumbleweed Logic
         const tumbleweed = document.getElementById('tumbleweed');
         const tumbleweedImg = document.getElementById('tumbleweed-img');
         const explosionGif = document.getElementById('explosion-gif');
         const goldIngot = document.getElementById('gold-ingot');
         const scoreElement = document.getElementById('score-count');
-        const scoreboard = document.getElementById('scoreboard');
 
         let count = 0;
-        let activeAnimation = null;
-
         function spawnTumbleweed() {
             tumbleweedImg.style.opacity = '0.85';
-            const w = window.innerWidth, h = window.innerHeight, padding = 150;
-            const isHorizontal = Math.random() > 0.4; 
-            let startX, startY, endX, endY;
-
-            if (isHorizontal) {
-                const isTop = Math.random() > 0.5;
-                startY = isTop ? Math.random() * (h * 0.15) : h - (Math.random() * (h * 0.15));
-                endY = startY + (Math.random() * 40 - 20);
-                startX = Math.random() > 0.5 ? -padding : w + padding;
-                endX = startX < 0 ? w + padding : -padding;
-            } else {
-                const isLeft = Math.random() > 0.5;
-                startX = isLeft ? Math.random() * (w * 0.15) : w - (Math.random() * (w * 0.15));
-                endX = startX + (Math.random() * 40 - 20);
-                startY = Math.random() > 0.5 ? -padding : h + padding;
-                endY = startY < 0 ? h + padding : -padding;
-            }
-
+            const w = window.innerWidth, h = window.innerHeight;
+            const startX = -200, endX = w + 200, startY = h / 2 + (Math.random() * 200 - 100);
+            
             tumbleweed.style.transition = 'none';
             tumbleweed.style.left = startX + 'px';
             tumbleweed.style.top = startY + 'px';
             tumbleweed.offsetHeight;
 
-            const duration = 4000 + Math.random() * 4000;
-            tumbleweed.style.transition = `left ${duration}ms linear, top ${duration}ms linear`;
+            const duration = 6000 + Math.random() * 4000;
+            tumbleweed.style.transition = `left ${duration}ms linear`;
             tumbleweed.style.left = endX + 'px';
-            tumbleweed.style.top = endY + 'px';
 
-            if (activeAnimation) clearTimeout(activeAnimation);
-            activeAnimation = setTimeout(() => {
-                if (tumbleweedImg.style.opacity !== '0') spawnTumbleweed();
-            }, duration);
+            setTimeout(() => { if(tumbleweedImg.style.opacity !== '0') spawnTumbleweed(); }, duration);
         }
 
-        tumbleweed.addEventListener('click', function() {
+        tumbleweed.addEventListener('click', () => {
             if (tumbleweedImg.style.opacity === '0') return;
             count++;
             scoreElement.innerText = count;
-            scoreboard.classList.add('bump');
-            setTimeout(() => scoreboard.classList.remove('bump'), 200);
-
             tumbleweedImg.style.opacity = '0';
-            const rect = tumbleweed.getBoundingClientRect();
-            tumbleweed.style.transition = 'none';
-            tumbleweed.style.left = rect.left + 'px';
-            tumbleweed.style.top = rect.top + 'px';
-            
             explosionGif.style.display = 'block';
             goldIngot.style.display = 'block';
             goldIngot.style.animation = 'ingot-float 1.5s forwards ease-out';
-
-            setTimeout(() => { explosionGif.style.display = 'none'; }, 1000);
+            setTimeout(() => explosionGif.style.display = 'none', 1000);
             setTimeout(() => {
                 goldIngot.style.display = 'none';
                 goldIngot.style.animation = '';
